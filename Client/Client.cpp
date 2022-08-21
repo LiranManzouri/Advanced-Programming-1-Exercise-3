@@ -29,6 +29,7 @@ int main(int argc, char const *argv[]) {
         // Saves the paths.
         char unclassifiedPath[4096] = {0};
         char outputClassifiedPath[4096] = {0};
+
         // Gets the paths.
         int i = 0, k = 0;
         while (message[i] != ' ') {
@@ -43,6 +44,7 @@ int main(int argc, char const *argv[]) {
             i++, k++;
         }
         outputClassifiedPath[k] = '\0';
+
         // Send the unclassified path to the server.
         front.sendMessage(unclassifiedPath);
 
@@ -50,10 +52,15 @@ int main(int argc, char const *argv[]) {
         char messageReceived[4096] = {0};
         strcpy(messageReceived, front.receiveMessage());
 
+        if (strcmp(messageReceived, "Rewrite the file path!") == 0) {
+            cout << messageReceived << endl;
+            continue;
+        }
+
         // Opens the output file.
         ofstream outputClassified;
         outputClassified.open(outputClassifiedPath);
-        if (!outputClassified) {
+        if (!outputClassified.is_open()) {
             cerr << "Error: file couldn't be opened!" << endl;
             exit(1);
         }

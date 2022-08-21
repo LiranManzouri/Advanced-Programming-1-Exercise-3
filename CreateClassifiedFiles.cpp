@@ -2,6 +2,7 @@
 // Created by liran on 30/07/2022.
 //
 
+#include <iostream>
 #include "CreateClassifiedFiles.h"
 #include "ReadFlowers.h"
 #include "ClassifyFlower.h"
@@ -20,8 +21,13 @@ pair<string *, int> CreateClassifiedFiles::createClassified() const {
     unclassifiedReader.readAndSaveFlowers();
 
     int numOfClassifiedFlowers = classifiedReader.getNumOfFlowers();
+    if (numOfClassifiedFlowers == -1) {
+        return {nullptr, 0};
+    }
     int numOfUnclassifiedFlowers = unclassifiedReader.getNumOfFlowers();
-
+    if (numOfUnclassifiedFlowers == -1) {
+        return {nullptr, 0};
+    }
     auto flowerTypesByOrder = new string[numOfUnclassifiedFlowers];
 
     Flower *classifiedFlowers = classifiedReader.getFlowers();

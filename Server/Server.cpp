@@ -57,6 +57,11 @@ int main(int argc, char const *argv[]) {
         CreateClassifiedFiles createClassifiedFiles(7, message);
         pair<string *, int> flowerTypes = createClassifiedFiles.createClassified();
         char flowerTypesAsChar[4096] = {0};
+        if (flowerTypes.first == nullptr && flowerTypes.second == 0) {
+            strcpy(flowerTypesAsChar, "Rewrite the file path!");
+            front.sendMessage(flowerTypesAsChar);
+            continue;
+        }
         int l = 0;
         // Writes the classifiers types to the char array, seperated by '\n'.
         for (int j = 0; j < flowerTypes.second; j++) {

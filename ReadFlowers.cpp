@@ -10,12 +10,16 @@ using namespace std;
 
 void ReadFlowers::readAndSaveFlowers() {
     int numOfFlowers = getNumOfFlowers();
+    if (numOfFlowers == -1) {
+        cerr << "Error: file couldn't be opened" << endl;
+        return;
+    }
     flowers = new Flower[numOfFlowers];
     ifstream flowersInputFile;
     flowersInputFile.open(fileName);
-    if (!flowersInputFile) {
+    if (!flowersInputFile.is_open()) {
         cerr << "Error: file couldn't be opened" << endl;
-        exit(1);
+        return;
     }
     string line;
     const char delim = ',';
@@ -53,6 +57,9 @@ int ReadFlowers::getNumOfFlowers() {
     int numOfFlowers = 0;
     ifstream inputFile;
     inputFile.open(fileName);
+    if (!inputFile.is_open()) {
+        return -1;
+    }
     string line;
     while (!inputFile.eof()) {
         getline(inputFile, line);
