@@ -16,10 +16,6 @@ class ClassifyFlower {
 
     std::pair<Flower *, double> *getEuclideanDistances() const;
 
-    std::pair<Flower *, double> *getChebyshevDistances() const;
-
-    std::pair<Flower *, double> *getManhattanDistances() const;
-
     std::string classifyByKNN(std::pair<Flower *, double> *distances) const;
 
 public:
@@ -29,9 +25,6 @@ public:
 
     std::string euclideanClassify();
 
-    std::string chebyshevClassify();
-
-    std::string manhattanClassify();
 };
 
 

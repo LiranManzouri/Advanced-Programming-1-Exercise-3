@@ -1,3 +1,10 @@
+//
+// Created by liran on 13/08/2022.
+//
+
+#ifndef ADVANCED_PROGRAMMING_1___EXERCISE_2_CLIENTFRONT_H
+#define ADVANCED_PROGRAMMING_1___EXERCISE_2_CLIENTFRONT_H
+
 /**
  * Class that is in control of communicating between the client
  * and the server, and represents the client in this communication.
@@ -26,3 +33,5 @@ public:
     // Receives message from the server.
     char *receiveMessage();
 };
+
+#endif //ADVANCED_PROGRAMMING_1___EXERCISE_2_CLIENTFRONT_H
