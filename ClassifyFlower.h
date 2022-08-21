@@ -5,6 +5,7 @@
 #ifndef ADVANCED_PROGRAMMING_1___EXERCISE_2_CLASSIFYFLOWER_H
 #define ADVANCED_PROGRAMMING_1___EXERCISE_2_CLASSIFYFLOWER_H
 
+#include <vector>
 #include "Flower.h"
 
 class ClassifyFlower {
@@ -14,9 +15,9 @@ class ClassifyFlower {
     const int k;
     Flower *flowers;
 
-    std::pair<Flower *, double> *getEuclideanDistances() const;
+    std::vector<std::pair<Flower *, double>> getEuclideanDistances() const;
 
-    std::string classifyByKNN(std::pair<Flower *, double> *distances) const;
+    std::string classifyByKNN(std::vector<std::pair<Flower *, double>> distances) const;
 
 public:
 

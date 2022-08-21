@@ -5,45 +5,45 @@
 #include "ClassifyFlower.h"
 #include "DistanceCalculator.h"
 #include "KNN.h"
+#include <vector>
 
 using namespace std;
 
-pair<Flower *, double> *ClassifyFlower::getEuclideanDistances() const {
-    auto *euclideanDistances = new pair<Flower *, double>[numOfFlowers];
+vector<pair<Flower *, double>> ClassifyFlower::getEuclideanDistances() const {
+    vector<pair<Flower *, double>> euclideanDistances;
+    euclideanDistances.reserve(numOfFlowers);
     for (int i = 0; i < numOfFlowers; i++) {
-        euclideanDistances[i] = (pair<Flower *, double>(&flowers[i],
-                                                        DistanceCalculator::euclidean(unclassifiedFlower, flowers[i])));
+        euclideanDistances.push_back((pair<Flower *, double>(&flowers[i],
+                                                             DistanceCalculator::euclidean(unclassifiedFlower,
+                                                                                           flowers[i]))));
     }
     return euclideanDistances;
 }
 
 string ClassifyFlower::euclideanClassify() {
-    pair<Flower *, double> *euclideanDistances = getEuclideanDistances();
+    vector<pair<Flower *, double>> euclideanDistances = getEuclideanDistances();
     KNN::QuickSelect(k, euclideanDistances, 0, numOfFlowers - 1);
     return classifyByKNN(euclideanDistances);
-
 }
 
 // runs the KNN algo on the array of pairs, then looks at the k first
 // elements and classfy the flower by them
-string ClassifyFlower::classifyByKNN(pair<Flower *, double> *distances) const {
+string ClassifyFlower::classifyByKNN(vector<pair<Flower *, double>> distances) const {
     int counterForIrisSetosa = 0;
     int counterForIrisVersicolor = 0;
     int counterForIrisVirginica = 0;
 
     for (int i = 0; i < k; i++) {
-        if (distances[i].first->getFlowerType() == "Iris-setosa") {
+        if (distances.at(i).first->getFlowerType() == "Iris-setosa") {
             counterForIrisSetosa++;
         }
-        if (distances[i].first->getFlowerType() == "Iris-versicolor") {
+        if (distances.at(i).first->getFlowerType() == "Iris-versicolor") {
             counterForIrisVersicolor++;
         }
-        if (distances[i].first->getFlowerType() == "Iris-virginica") {
+        if (distances.at(i).first->getFlowerType() == "Iris-virginica") {
             counterForIrisVirginica++;
         }
     }
-
-    delete[] distances;
 
     int maxCounter = counterForIrisSetosa;
     maxCounter = max(maxCounter, counterForIrisVersicolor);
