@@ -10,7 +10,7 @@ using namespace std;
  * Returns:
  *   The index of the pivot.
  */
-int KNN::partition(vector<pair<Flower *, double>> arr, int left, int right, int pivot) {
+int KNN::partition(vector<pair<Flower *, double>>& arr, int left, int right, int pivot) {
     //gets the pivot to the right place in O(N), using swaps
     double x = arr.at(pivot).second;
     swap(arr.at(pivot), arr.at(right));
@@ -36,7 +36,7 @@ int KNN::partition(vector<pair<Flower *, double>> arr, int left, int right, int 
  * Returns:
  *   the index of the pivot after the partition.
  */
-void KNN::QuickSelect(int k, const vector<pair<Flower *, double>>& arr, int left, int right) {
+void KNN::QuickSelect(int k, vector<pair<Flower *, double>>& arr, int left, int right) {
     if (left == right) {
         return;
     }

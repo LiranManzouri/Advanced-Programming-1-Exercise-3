@@ -6,6 +6,7 @@
 #include "DistanceCalculator.h"
 #include "KNN.h"
 #include <vector>
+#include <iostream>
 
 using namespace std;
 
@@ -32,7 +33,6 @@ string ClassifyFlower::classifyByKNN(vector<pair<Flower *, double>> distances) c
     int counterForIrisSetosa = 0;
     int counterForIrisVersicolor = 0;
     int counterForIrisVirginica = 0;
-
     for (int i = 0; i < k; i++) {
         if (distances.at(i).first->getFlowerType() == "Iris-setosa") {
             counterForIrisSetosa++;
@@ -44,7 +44,6 @@ string ClassifyFlower::classifyByKNN(vector<pair<Flower *, double>> distances) c
             counterForIrisVirginica++;
         }
     }
-
     int maxCounter = counterForIrisSetosa;
     maxCounter = max(maxCounter, counterForIrisVersicolor);
     maxCounter = max(maxCounter, counterForIrisVirginica);

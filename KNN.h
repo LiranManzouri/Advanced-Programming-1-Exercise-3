@@ -8,11 +8,11 @@
 // which is responsable for the distance.
 class KNN {
     // the partion part in quickselect
-    static int partition(std::vector<std::pair<Flower *, double>> arr, int left, int right, int pivot);
+    static int partition(std::vector<std::pair<Flower *, double>>& arr, int left, int right, int pivot);
 
 public:
     // the quickselect itself
-    static void QuickSelect(int k, const std::vector<std::pair<Flower *, double>>& arr, int left, int right);
+    static void QuickSelect(int k, std::vector<std::pair<Flower *, double>>& arr, int left, int right);
 };
 
 
