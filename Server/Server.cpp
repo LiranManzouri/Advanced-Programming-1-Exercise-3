@@ -1,10 +1,44 @@
+#include "Server.h"
 #include "ServerFront.h"
 #include <iostream>
 #include <cstring>
 #include "../CreateClassifiedFiles.h"
 
-
 using namespace std;
+
+bool checkIfClosedAndHandleIt(char message[4096], ServerFront &front, int &i) {
+    if (strcmp(message, "closed") == 0) {
+        // Closes the server as well, or waiting for another client.
+        string option;
+        cout << "Please choose an option:\n\t==> 1. Wait for another client.\n\t==> 2. Close the server."
+             << endl;
+        do {
+            // Gets the decision.
+            cin >> option;
+            // Waits for new client.
+            if (option == "1") {
+                cout << "==> Waiting for client..." << endl;
+                // Closes the client socket.
+                front.closeClientSock();
+                // Gets new client.
+                front.getNewClient(i);
+                // Just added a new client.
+                i++;
+                // Closes the client socket.
+            } else if (option != "2") {
+                cout << "==> Wrong key! Please choose 1 or 2 according to your wish!" << endl;
+            }
+            // Gets the decision until it's valid.
+        } while (option != "1" && option != "2");
+        // Leaves the communication.
+        if (option == "2") {
+            return true;
+        }
+        // option == 1.
+    }
+    // Continue communicating.
+    return false;
+}
 
 /*
  * Main for the server, to communicate with the clients.
@@ -22,41 +56,17 @@ int main(int argc, char const *argv[]) {
         // Gets the path to the unclassified flowers.
         strcpy(message, front.receiveMessage());
         // If the message is closed, it means the client closed the socket.
-        if (strcmp(message, "closed") == 0) {
-            // Closes the server as well, or waiting for another client.
-            string option;
-            cout << "Please choose an option:\n\t==> 1. Wait for another client.\n\t==> 2. Close the server."
-                 << endl;
-            do {
-                // Gets the decision.
-                cin >> option;
-                // Waits for new client.
-                if (option == "1") {
-                    cout << "==> Waiting for client..." << endl;
-                    // Closes the client socket.
-                    front.closeClientSock();
-                    // Gets new client.
-                    front.getNewClient(i);
-                    // Just added a new client.
-                    i++;
-                    // Closes the client socket.
-                } else if (option != "2") {
-                    cout << "==> Wrong key! Please choose 1 or 2 according to your wish!" << endl;
-                }
-                // Gets the decision until it's valid.
-            } while (option != "1" && option != "2");
-            // Leaves the communication.
-            if (option == "2") {
-                break;
-                // Continue communicating.
-            } else if (option == "1") {
-                continue;
-            }
+        bool isClosed = checkIfClosedAndHandleIt(message, front, i);
+        if (isClosed) {
+            break;
+        } else if (strcmp(message, "closed") == 0) {
+            continue;
         }
         // Classify the unclassified flowers in the given path.
         CreateClassifiedFiles createClassifiedFiles(7, message);
         pair<string *, int> flowerTypes = createClassifiedFiles.createClassified();
         char flowerTypesAsChar[4096] = {0};
+        // invalid path.
         if (flowerTypes.first == nullptr && flowerTypes.second == 0) {
             strcpy(flowerTypesAsChar, "Rewrite the file path!");
             front.sendMessage(flowerTypesAsChar);
