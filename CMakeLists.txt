@@ -20,6 +20,8 @@ add_executable(Advanced_Programming_1___Exercise_2
         ClassifyFlower.h
         CreateClassifiedFiles.cpp
         CreateClassifiedFiles.h
+        CreateFlowerByLine.cpp
+        CreateFlowerByLine.h
         DistanceCalculator.cpp
         DistanceCalculator.h
         Flower.cpp

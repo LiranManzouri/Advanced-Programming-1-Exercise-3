@@ -6,6 +6,7 @@
 #include "CreateClassifiedFiles.h"
 #include "ReadFlowers.h"
 #include "ClassifyFlower.h"
+#include "CreateFlowerByLine.h"
 
 using namespace std;
 
@@ -13,34 +14,31 @@ using namespace std;
  * It reads the classified and unclassified flowers, and then
  * classifies the unclassified flowers by the three methods, and writes the results to the files
  */
-pair<string *, int> CreateClassifiedFiles::createClassified() const {
+vector<string> CreateClassifiedFiles::createClassified() const {
     //reads the flowers
     ReadFlowers classifiedReader = ReadFlowers("classified.csv");
-    ReadFlowers unclassifiedReader = ReadFlowers(unclassifiedPath);
     classifiedReader.readAndSaveFlowers();
-    unclassifiedReader.readAndSaveFlowers();
 
     int numOfClassifiedFlowers = classifiedReader.getNumOfFlowers();
     if (numOfClassifiedFlowers == -1) {
-        return {nullptr, 0};
+        return {};
     }
-    int numOfUnclassifiedFlowers = unclassifiedReader.getNumOfFlowers();
-    if (numOfUnclassifiedFlowers == -1) {
-        return {nullptr, 0};
-    }
-    auto flowerTypesByOrder = new string[numOfUnclassifiedFlowers];
 
     Flower *classifiedFlowers = classifiedReader.getFlowers();
-    Flower *unclassifiedFlowers = unclassifiedReader.getFlowers();
 
+    vector<string> flowerTypesByOrder;
+
+    string info = flowersInfo;
+    int i = 0;
     //writes the classified info to the array.
-    for (int i = 0; i < numOfUnclassifiedFlowers; i++) {
-        const Flower unclassifiedFlower = unclassifiedFlowers[i];
+    while (!info.empty()) {
+        string line = info.substr(0, info.find('\n'));
+        info.erase(0, info.find('\n') + 1);
+        CreateFlowerByLine createFlowerByLine(line);
+        const Flower unclassifiedFlower = createFlowerByLine.getFlower();
         ClassifyFlower classifyFlower(unclassifiedFlower, classifiedFlowers, numOfClassifiedFlowers, k);
-        flowerTypesByOrder[i] = classifyFlower.euclideanClassify();
+        flowerTypesByOrder.push_back(classifyFlower.euclideanClassify());
+        i++;
     }
-
-    pair<string *, int> typesAndNumOfTypesPair(flowerTypesByOrder, numOfUnclassifiedFlowers);
-
-    return typesAndNumOfTypesPair;
+    return flowerTypesByOrder;
 }

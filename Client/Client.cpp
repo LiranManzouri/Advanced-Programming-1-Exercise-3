@@ -1,7 +1,10 @@
 #include "ClientFront.h"
+#include "../ReadFlowers.h"
+#include "../ClassifyFlower.h"
 #include <iostream>
 #include <cstring>
 #include <fstream>
+
 
 using namespace std;
 
@@ -14,7 +17,7 @@ int main(int argc, char const *argv[]) {
     // Responsible for the communication.
     ClientFront front;
     // Saves the message.
-    char message[4096] = {0};
+    char message[4096] = "\0";
     // Stops the communication after getting the close message.
     while (strcmp(message, "close") != 0) {
         // Asks for the paths.
@@ -32,7 +35,7 @@ int main(int argc, char const *argv[]) {
 
         // Gets the paths.
         int i = 0, k = 0;
-        while (message[i] != ' ') {
+        while (message[i] != ' ' && message[i] != '\0') {
             unclassifiedPath[k] = message[i];
             i++, k++;
         }
@@ -45,8 +48,31 @@ int main(int argc, char const *argv[]) {
         }
         outputClassifiedPath[k] = '\0';
 
+        strcpy(message, "\0");
+
+        ReadFlowers unclassifiedReader = ReadFlowers(unclassifiedPath);
+        unclassifiedReader.readAndSaveFlowers();
+        int numOfUnclassifiedFlowers = unclassifiedReader.getNumOfFlowers();
+        if (numOfUnclassifiedFlowers == -1) {
+            cerr << "Error: file couldn't be opened, Rewrite the file path!" << endl;
+            continue;
+        }
+
+        vector<string> flowerTypesByOrder;
+        flowerTypesByOrder.reserve(numOfUnclassifiedFlowers);
+        Flower *unclassifiedFlowers = unclassifiedReader.getFlowers();
+        //writes the classified info to the array.
+        for (int j = 0; j < numOfUnclassifiedFlowers; j++) {
+            const Flower unclassifiedFlower = unclassifiedFlowers[j];
+            flowerTypesByOrder.push_back(to_string(unclassifiedFlower.getCalyxLeavesLength()) + ","
+                                         + to_string(unclassifiedFlower.getCalyxLeavesWidth()) + ","
+                                         + to_string(unclassifiedFlower.getPetalLength()) + ","
+                                         + to_string(unclassifiedFlower.getPetalWidth()) + "\n");
+            const char *send = flowerTypesByOrder.at(j).c_str();
+            strcat(message, send);
+        }
         // Send the unclassified path to the server.
-        front.sendMessage(unclassifiedPath);
+        front.sendMessage(message);
 
         // Gets the types of the flowers after the server classified them.
         char messageReceived[4096] = {0};

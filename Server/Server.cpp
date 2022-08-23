@@ -1,4 +1,4 @@
-#include "Server.h"
+//#include "Server.h"
 #include "ServerFront.h"
 #include <iostream>
 #include <cstring>
@@ -64,18 +64,12 @@ int main(int argc, char const *argv[]) {
         }
         // Classify the unclassified flowers in the given path.
         CreateClassifiedFiles createClassifiedFiles(7, message);
-        pair<string *, int> flowerTypes = createClassifiedFiles.createClassified();
+        vector<string> flowerTypes = createClassifiedFiles.createClassified();
         char flowerTypesAsChar[4096] = {0};
-        // invalid path.
-        if (flowerTypes.first == nullptr && flowerTypes.second == 0) {
-            strcpy(flowerTypesAsChar, "Rewrite the file path!");
-            front.sendMessage(flowerTypesAsChar);
-            continue;
-        }
         int l = 0;
         // Writes the classifiers types to the char array, seperated by '\n'.
-        for (int j = 0; j < flowerTypes.second; j++) {
-            for (char k: flowerTypes.first[j]) {
+        for (auto & flowerType : flowerTypes) {
+            for (char k: flowerType) {
                 flowerTypesAsChar[l] = k;
                 l++;
             }
@@ -83,7 +77,6 @@ int main(int argc, char const *argv[]) {
             l++;
         }
         flowerTypesAsChar[l] = '\0';
-        delete[] flowerTypes.first;
         // Sends the classified to the client.
         cout << "==> Classified! Sending back to you..." << endl;
         front.sendMessage(flowerTypesAsChar);

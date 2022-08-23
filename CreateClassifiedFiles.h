@@ -6,20 +6,20 @@
 #define ADVANCED_PROGRAMMING_1___EXERCISE_2_CREATECLASSIFIEDFILES_H
 
 #include <string>
+#include <vector>
 
 class CreateClassifiedFiles {
 
     const int k;
-    const std::string unclassifiedPath;
+    const std::string flowersInfo;
 
 public:
 
-    CreateClassifiedFiles(int k, std::string unclassifiedPath) :
-            k(k), unclassifiedPath(std::move(unclassifiedPath)) {}
+    CreateClassifiedFiles(int k, std::string flowersInfo) : k(k), flowersInfo(std::move(flowersInfo)) {}
 
     // creates the output files for the classifier to write in
     // and write the classified info to the files
-    std::pair<std::string *, int> createClassified() const;
+    std::vector<std::string> createClassified() const;
 };
 
 
