@@ -27,7 +27,7 @@ communication anytime, by writing "close" (without the "") instead of the paths.
 have to close the client socket first, and then press "2" in the little menu you will see, for waiting and accept
 another client, press "1" in that menu, and then run only the Client again (same as mentioned above).
 
-# Implantation
+# Implementation
 
 In this project, there are server and client. The client sends a path to unclassified flowers to the server, which
 classify them by the knn algorithm we've implemented in exercise 1, with k = 7. After classifying, the server sends the
