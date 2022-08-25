@@ -6,7 +6,14 @@
 #define ADVANCED_PROGRAMMING_1___EXERCISE_3_SOCKETIO_H
 
 
-class SocketIO {
+#include "DefaultIO.h"
+
+class SocketIO : DefaultIO {
+
+public:
+    std::string read() override;
+
+    void write(std::string) override;
 
     // func1: sendFromClientToServer(...);
     // func2: receiveInClientFromServer(...);

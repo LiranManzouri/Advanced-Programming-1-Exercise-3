@@ -2,6 +2,7 @@ cmake_minimum_required(VERSION 3.24)
 project(Advanced_Programming_1___Exercise_3)
 
 set(CMAKE_CXX_STANDARD 11)
+SET(CMAKE_CXX_FLAGS -pthread)
 
 include_directories(.)
 include_directories(Client)
@@ -28,8 +29,14 @@ add_executable(Advanced_Programming_1___Exercise_3 Client/Client.cpp
         Command/PrintClassifiedCommand.h
         Command/DownloadResultsCommand.cpp
         Command/DownloadResultsCommand.h
-        SocketIO.cpp
-        SocketIO.h
+        Command/ConfusionMatrixCommand.cpp
+        Command/ConfusionMatrixCommand.h
+        IO/DefaultIO.cpp
+        IO/DefaultIO.h
+        IO/SocketIO.cpp
+        IO/SocketIO.h
+        IO/StandardIO.cpp
+        IO/StandardIO.h
         CLI.cpp
         CLI.h
         tempMain.cpp

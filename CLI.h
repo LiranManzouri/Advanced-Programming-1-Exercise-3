@@ -6,20 +6,21 @@
 #define ADVANCED_PROGRAMMING_1___EXERCISE_3_CLI_H
 
 
-#include <DownloadResultsCommand.h>
 #include "Command/Command.h"
 #include "Command/UploadCommand.h"
 #include "Command/AlgoSettingsCommand.h"
 #include "ClassifyCommand.h"
 #include "PrintClassifiedCommand.h"
+#include "DownloadResultsCommand.h"
 
 class CLI {
+    int serverSocket;
     Command *commands[5]{};
 
     void printMenu();
 
 public:
-    CLI() {
+    explicit CLI(int serverSocket) : serverSocket(serverSocket) {
 //    std::string unclassifiedPath;
         int k = 5;
         char classifiedTrainData[4096];

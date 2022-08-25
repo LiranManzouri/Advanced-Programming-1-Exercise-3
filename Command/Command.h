@@ -6,14 +6,14 @@
 #define ADVANCED_PROGRAMMING_1___EXERCISE_3_COMMAND_H
 
 
-#include "../Client/ClientFront.h"
-#include "../Server/ServerFront.h"
+#include "IO/DefaultIO.h"
 #include <string>
 #include <utility>
 #include <vector>
 
 class Command {
 protected:
+//    DefaultIO dio;
     const std::string description;
 //    std::string unclassifiedPath;
     int *k;
