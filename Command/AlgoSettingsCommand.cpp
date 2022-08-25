@@ -8,7 +8,7 @@
 using namespace std;
 
 void AlgoSettingsCommand::execute() {
-    cout << "The current KNN parameters are: K = " << k << ", distance metric = " << distanceMetric << endl;
+    cout << "The current KNN parameters are: K = " << *k << ", distance metric = " << *distanceMetric << endl;
     string userInput;
     cin.ignore();
     getline(cin, userInput);
@@ -44,8 +44,8 @@ void AlgoSettingsCommand::execute() {
                 getline(cin, userInput);
                 continue;
             }
-            k = userK;
-            distanceMetric = userDistanceMetric;
+            *k = userK;
+            *distanceMetric = userDistanceMetric;
             failed = false;
         } while (failed);
     }

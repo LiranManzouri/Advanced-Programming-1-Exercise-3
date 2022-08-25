@@ -9,7 +9,11 @@
 
 class UploadCommand : public Command {
 public:
-    UploadCommand() : Command("upload un unclassified csv data file"){}
+    UploadCommand(int *k, char classifiedTrainData[4096], char unclassifiedTestData[4096],
+                  std::string *distanceMetric, std::vector<std::string> *flowerTypes) : Command(
+            "upload un unclassified csv data file", k, classifiedTrainData,
+            unclassifiedTestData, distanceMetric, flowerTypes) {}
+
     void execute() override;
 };
 

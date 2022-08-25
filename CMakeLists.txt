@@ -22,6 +22,12 @@ add_executable(Advanced_Programming_1___Exercise_3 Client/Client.cpp
         Command/AlgoSettingsCommand.h
         Command/UploadCommand.cpp
         Command/UploadCommand.h
+        Command/ClassifyCommand.cpp
+        Command/ClassifyCommand.h
+        Command/PrintClassifiedCommand.cpp
+        Command/PrintClassifiedCommand.h
+        Command/DownloadResultsCommand.cpp
+        Command/DownloadResultsCommand.h
         SocketIO.cpp
         SocketIO.h
         CLI.cpp

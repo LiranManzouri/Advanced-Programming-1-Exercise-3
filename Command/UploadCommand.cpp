@@ -12,11 +12,12 @@ using namespace std;
 void UploadCommand::execute() {
     cout << "Please upload your local train CSV file." << endl;
 
-    cin >> unclassifiedPath;
+    string path;
 
-    GetUnclassifiedFileData getTrainFileData(unclassifiedPath);
-    char message[4096] = {0};
-    strcpy(message, getTrainFileData.getData().c_str());
+    cin >> path;
+    GetUnclassifiedFileData getTrainFileData(path);
+    //    char message[4096] = {0};
+    strcpy(classifiedTrainData, getTrainFileData.getData().c_str());
 
     // Send the unclassified path to the server.
 
@@ -26,11 +27,11 @@ void UploadCommand::execute() {
 
     cout << "Please upload your local test CSV file." << endl;
 
-    cin >> unclassifiedPath;
+    cin >> path;
 
-    GetUnclassifiedFileData getTestFileData(unclassifiedPath);
-    strcpy(message, getTestFileData.getData().c_str());
-
+    GetUnclassifiedFileData getTestFileData(path);
+    strcpy(unclassifiedTestData, getTestFileData.getData().c_str());
+//    cout << unclassifiedTestData << endl;
     // Send the unclassified path to the server.
 
 //    clientFront.sendMessage(message);

@@ -11,7 +11,10 @@
 class AlgoSettingsCommand : public Command {
 
 public:
-    AlgoSettingsCommand() : Command("algorithm settings") {}
+    AlgoSettingsCommand(int *k, char classifiedTrainData[4096], char unclassifiedTestData[4096],
+                        std::string *distanceMetric, std::vector<std::string> *flowerTypes) : Command(
+            "algorithm settings", k, classifiedTrainData, unclassifiedTestData, distanceMetric, flowerTypes) {}
+
     void execute() override;
 };
 

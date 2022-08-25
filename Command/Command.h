@@ -6,18 +6,22 @@
 #define ADVANCED_PROGRAMMING_1___EXERCISE_3_COMMAND_H
 
 
+#include "../Client/ClientFront.h"
+#include "../Server/ServerFront.h"
 #include <string>
 #include <utility>
-#include <../Client/ClientFront.h>
-#include <ServerFront.h>
+#include <vector>
 
 class Command {
 protected:
     const std::string description;
-    std::string unclassifiedPath;
-    int k = 5;
-    std::string distanceMetric = "EUC";
-//    const ClientFront clientFront;
+//    std::string unclassifiedPath;
+    int *k;
+    char *classifiedTrainData;
+    char *unclassifiedTestData;
+    std::string *distanceMetric = new std::string("EUC");
+    std::vector<std::string> *flowerTypes;
+    //    const ClientFront clientFront;
 public:
     virtual void execute() = 0;
 
@@ -25,7 +29,13 @@ public:
         return description;
     }
 
-    explicit Command(std::string description) : description(std::move(description)) {}
+    Command(std::string description, int *k, char classifiedTrainData[4096], char unclassifiedTestData[4096],
+            std::string *distanceMetric, std::vector<std::string> *flowerTypes)
+         : description(std::move(description)), k(k), distanceMetric(distanceMetric) {
+        this->classifiedTrainData = classifiedTrainData;
+        this->unclassifiedTestData = unclassifiedTestData;
+        this->flowerTypes = flowerTypes;
+    }
 
 };
 
