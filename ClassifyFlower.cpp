@@ -27,6 +27,41 @@ string ClassifyFlower::euclideanClassify() {
     return classifyByKNN(euclideanDistances);
 }
 
+vector<pair<Flower *, double>> ClassifyFlower::getChebyshevDistances() const {
+    vector<pair<Flower *, double>> chebyshevDistances;
+    chebyshevDistances.reserve(numOfFlowers);
+    for (int i = 0; i < numOfFlowers; i++) {
+        chebyshevDistances.push_back((pair<Flower *, double>(&flowers[i],
+                                                             DistanceCalculator::chebyshev(unclassifiedFlower,
+                                                                                           flowers[i]))));
+    }
+    return chebyshevDistances;
+}
+
+string ClassifyFlower::chebyshevClassify() {
+    vector<pair<Flower *, double>> chebyshevDistances = getChebyshevDistances();
+    KNN::QuickSelect(k, chebyshevDistances, 0, numOfFlowers - 1);
+    return classifyByKNN(chebyshevDistances);
+}
+
+vector<pair<Flower *, double>> ClassifyFlower::getManhattanDistances() const {
+    vector<pair<Flower *, double>> manhattanDistances;
+    manhattanDistances.reserve(numOfFlowers);
+    for (int i = 0; i < numOfFlowers; i++) {
+        manhattanDistances.push_back((pair<Flower *, double>(&flowers[i],
+                                                             DistanceCalculator::manhattan(unclassifiedFlower,
+                                                                                           flowers[i]))));
+    }
+    return manhattanDistances;
+}
+
+string ClassifyFlower::manhattanClassify() {
+    vector<pair<Flower *, double>> manhattanDistances = getManhattanDistances();
+    KNN::QuickSelect(k, manhattanDistances, 0, numOfFlowers - 1);
+    return classifyByKNN(manhattanDistances);
+}
+
+
 // runs the KNN algo on the array of pairs, then looks at the k first
 // elements and classfy the flower by them
 string ClassifyFlower::classifyByKNN(vector<pair<Flower *, double>> distances) const {

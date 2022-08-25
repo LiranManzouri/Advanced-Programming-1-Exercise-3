@@ -1,0 +1,14 @@
+//
+// Created by liran on 25/08/2022.
+//
+
+#ifndef ADVANCED_PROGRAMMING_1___EXERCISE_3_TEMPMAIN_H
+#define ADVANCED_PROGRAMMING_1___EXERCISE_3_TEMPMAIN_H
+
+
+class tempMain {
+
+};
+
+
+#endif //ADVANCED_PROGRAMMING_1___EXERCISE_3_TEMPMAIN_H
