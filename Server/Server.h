@@ -6,8 +6,7 @@
 #define ADVANCED_PROGRAMMING_1___EXERCISE_2_SERVER_H
 
 class Server {
-
+    
 };
-
 
 #endif //ADVANCED_PROGRAMMING_1___EXERCISE_2_SERVER_H

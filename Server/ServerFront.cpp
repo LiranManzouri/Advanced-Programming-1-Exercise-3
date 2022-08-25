@@ -15,7 +15,6 @@ void ServerFront::StartServer() {
         cout << " ";
     }
     cout << "\033[4m\e[1mSERVER\e[0m\033[0m" << endl;
-    cout << "==> Waiting for client..." << endl;
     // Port to use.
     const int server_port = 5555;
     // Creates the socket and checks it created successfully.
@@ -36,15 +35,14 @@ void ServerFront::StartServer() {
         cout << "Error binding socket in SERVER" << endl;
         exit(1);
     }
-    // Gets the first client.
-    getNewClient(1);
+    // getNewClient();
 }
 
 /**
  * Receives a message from the client.
  * @return the received message.
  */
-char *ServerFront::receiveMessage() {
+char *ServerFront::receiveMessage(int client_sock) {
     // Cleans the buffer.
     for (int i = 0; i < data_len; i++) {
         buffer[i] = '\0';
@@ -67,7 +65,7 @@ char *ServerFront::receiveMessage() {
  * Sends a message to a client.
  * @param message is the message we sent.
  */
-void ServerFront::sendMessage(char (&message)[4096]) const {
+void ServerFront::sendMessage(char (&message)[4096], int client_sock) const {
     // Sends and checks that it sent successfully.
     long sent_bytes = send(client_sock, message, data_len, 0);
     if (sent_bytes < 0) {
@@ -88,7 +86,7 @@ ServerFront::~ServerFront() {
  * Gets new client to the server.
  * @param i is the client's number.
  */
-void ServerFront::getNewClient(int i) {
+int ServerFront::getNewClient() {
     // Waits for a client.
     if (listen(sock, 1) < 0) {
         cout << "Error listening to a socket in SERVER" << endl;
@@ -97,26 +95,10 @@ void ServerFront::getNewClient(int i) {
     // Accepts the client and checks it went successfully.
     struct sockaddr_in client_sin{};
     unsigned int addr_len = sizeof(client_sin);
-    client_sock = accept(sock, (struct sockaddr *) &client_sin, &addr_len);
+    int client_sock = accept(sock, (struct sockaddr *) &client_sin, &addr_len);
     if (client_sock < 0) {
         cout << "Error accepting client in SERVER" << endl;
         exit(1);
     }
-    // Prints the client's number.
-    if (i == 1) {
-        cout << "The 1st Client accepted!" << endl;
-    } else if (i == 2) {
-        cout << "\nThe 2nd Client accepted!" << endl;
-    } else if (i == 3) {
-        cout << "\nThe 3rd Client accepted!" << endl;
-    } else {
-        cout << "\nThe " << i << "th Client accepted!" << endl;
-    }
-}
-
-/**
- * Closes the current client socket.
- */
-void ServerFront::closeClientSock() const {
-    close(client_sock);
+    return client_sock;
 }
