@@ -75,14 +75,6 @@ void ServerFront::sendMessage(char (&message)[4096], int client_sock) const {
 }
 
 /**
- * Destructor.
- */
-ServerFront::~ServerFront() {
-    cout << "Closing socket in SERVER" << endl;
-    close(sock);
-}
-
-/**
  * Gets new client to the server.
  * @param i is the client's number.
  */
@@ -101,4 +93,9 @@ int ServerFront::getNewClient() {
         exit(1);
     }
     return client_sock;
+}
+
+void ServerFront::CloseServer(){
+    cout << "Closing socket in SERVER" << endl;
+    close(sock);
 }

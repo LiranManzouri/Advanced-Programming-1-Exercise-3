@@ -17,18 +17,14 @@ private:
     char buffer[4096] = {0};
     int sock = 0;
 
-    // Creates the socket and connecting the client to the server.
-    void StartServer();
 
 public:
 
-    // Constructor.
-    ServerFront() {
-        StartServer();
-    }
+    // Creates the socket.
+    void StartServer();
 
-    // Destructor.
-    ~ServerFront();
+    // Closes the socket.
+    void CloseServer();
 
     // Sends message to a client.
     void sendMessage(char (&message)[4096], int client_sock) const;
