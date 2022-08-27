@@ -12,8 +12,9 @@ class PrintClassifiedCommand : public Command {
 
 public:
     PrintClassifiedCommand(int *k, char classifiedTrainData[4096], char unclassifiedTestData[4096],
-                           std::string *distanceMetric, std::vector<std::string> *flowerTypes) : Command(
-            "display results", k, classifiedTrainData, unclassifiedTestData, distanceMetric, flowerTypes) {}
+                           std::string *distanceMetric, std::vector<std::string> *flowerTypes, DefaultIO *dio)
+            : Command("display results", k, classifiedTrainData, unclassifiedTestData, distanceMetric,
+                      flowerTypes, dio) {}
 
     void execute() override;
 };

@@ -3,39 +3,32 @@
 //
 
 #include "UploadCommand.h"
-#include "GetUnclassifiedFileData.h"
+#include "../GetUnclassifiedFileData.h"
 #include <iostream>
-#include <cstring>
+#include <fstream>
 
 using namespace std;
 
 void UploadCommand::execute() {
-    cout << "Please upload your local train CSV file." << endl;
 
-    string path;
+    dio->write("Please upload your local train CSV file.\n");
+    ofstream outTrainFileInServer("TrainFile.csv");
+    string line;
+    while ((line = dio->read()).length() != 0) {
+        outTrainFileInServer << line << endl;
+    }
 
-    cin >> path;
-    GetUnclassifiedFileData getTrainFileData(path);
-    //    char message[4096] = {0};
-    strcpy(classifiedTrainData, getTrainFileData.getData().c_str());
+    outTrainFileInServer.close();
+    dio->write("Upload complete.\n");
 
-    // Send the unclassified path to the server.
 
-//    clientFront.sendMessage(message);
+    dio->write("Please upload your local test CSV file.\n");
+    ofstream outTestFileInServer("TestFile.csv");
+    while (!(line = dio->read()).empty()) {
+        outTestFileInServer << line << endl;
+    }
+    outTestFileInServer.close();
+    dio->write("Upload complete.");
 
-    cout << "Upload complete." << endl;
-
-    cout << "Please upload your local test CSV file." << endl;
-
-    cin >> path;
-
-    GetUnclassifiedFileData getTestFileData(path);
-    strcpy(unclassifiedTestData, getTestFileData.getData().c_str());
-//    cout << unclassifiedTestData << endl;
-    // Send the unclassified path to the server.
-
-//    clientFront.sendMessage(message);
-
-    cout << "Upload complete." << endl;
 
 }

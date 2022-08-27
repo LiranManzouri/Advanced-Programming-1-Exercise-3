@@ -27,9 +27,9 @@ string GetUnclassifiedFileData::getData() {
     for (int j = 0; j < numOfUnclassifiedFlowers; j++) {
         const Flower unclassifiedFlower = unclassifiedFlowers[j];
         stringMessage.append(to_string(unclassifiedFlower.getCalyxLeavesLength()) + ","
-                                     + to_string(unclassifiedFlower.getCalyxLeavesWidth()) + ","
-                                     + to_string(unclassifiedFlower.getPetalLength()) + ","
-                                     + to_string(unclassifiedFlower.getPetalWidth()) + "\n");
+                             + to_string(unclassifiedFlower.getCalyxLeavesWidth()) + ","
+                             + to_string(unclassifiedFlower.getPetalLength()) + ","
+                             + to_string(unclassifiedFlower.getPetalWidth()) + "\n");
     }
     return stringMessage;
 }

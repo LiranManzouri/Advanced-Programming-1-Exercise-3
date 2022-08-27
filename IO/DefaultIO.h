@@ -10,7 +10,7 @@
 
 class DefaultIO {
 public:
-    virtual void write(std::string) = 0;
+    virtual void write(std::string message) = 0;
     virtual std::string read() = 0;
 };
 

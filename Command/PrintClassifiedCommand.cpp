@@ -9,19 +9,18 @@ using namespace std;
 
 void PrintClassifiedCommand::execute() {
     if (flowerTypes->empty()) {
-        cout << "You have to classify the data first!" << endl;
+        dio->write("You have to classify the data first!\n");
         return;
     }
 
     int i = 1;
     for (auto &flowerType: *flowerTypes) {
-        cout << i++ << " " << flowerType << endl;
+        dio->write(to_string(i++) + " " + flowerType + "\n");
     }
-    cout << "Done." << endl;
+    dio->write("Done.\n");
 
     string userInput;
     do {
-        cin.ignore();
-        getline(cin, userInput);
-    } while (userInput.length() != 0);
+        userInput = dio->read();
+    } while (userInput != "\n");
 }

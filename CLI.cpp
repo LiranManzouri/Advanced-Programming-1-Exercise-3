@@ -3,28 +3,32 @@
 //
 
 #include "CLI.h"
-#include <vector>
 #include <iostream>
+#include <mutex>
+#include <netinet/in.h>
 
 using namespace std;
+mutex m;
 
 void CLI::start() {
-//    ServerFront front;
     printMenu();
-    int choose = 0;
-    cin >> choose;
+    string clientInput;
+    clientInput = socketIo.read();
+    int choose = stoi(clientInput);
     while (choose != 8) {
         commands[choose - 1]->execute();
         printMenu();
-        cin >> choose;
+        clientInput = socketIo.read();
+        choose = stoi(clientInput);
     }
 }
 
 void CLI::printMenu() {
-    cout << "Welcome to the KNN Classifier Server. Please choose an option:" << endl;
+    unique_lock<mutex> ul(m);
+    string message = "Welcome to the KNN Classifier Server. Please choose an option:\n";
     int i = 1;
     for (auto &command: commands) {
-        cout << i << ". " << command->getDescription() << endl;
-        i++;
+        message.append(to_string(i++) + ". " + command->getDescription() + "\n");
     }
+    socketIo.write(message);
 }

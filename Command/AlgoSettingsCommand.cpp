@@ -8,40 +8,41 @@
 using namespace std;
 
 void AlgoSettingsCommand::execute() {
-    cout << "The current KNN parameters are: K = " << *k << ", distance metric = " << *distanceMetric << endl;
-    string userInput;
-    cin.ignore();
-    getline(cin, userInput);
-    if (userInput.length() == 0) {
+//    cout << "The current KNN parameters are: K = " << *k << ", distance metric = " << *distanceMetric << endl;
+    string algoSettings = "The current KNN parameters are: K = " + to_string(*k) +
+                          ", distance metric = " + (*distanceMetric) + "\n";
+    dio->write(algoSettings);
+    string userInput = dio->read();
+    if (userInput == "\n") {
         return;
     } else {
         bool failed;
         do {
             failed = false;
             string token = userInput.substr(0, userInput.find(' '));
-            for (char c : token) {
+            for (char c: token) {
                 if (!isdigit(c)) {
                     failed = true;
                 }
             }
             if (failed) {
-                cerr << "First input needs to be a number!" << endl;
-                getline(cin, userInput);
+                dio->write("First input needs to be a number!\n");
+                userInput = dio->read();
                 continue;
             }
             int userK = stoi(userInput.substr(0, userInput.find(' ')));
             if (userK > 10 || userK < 1) {
-                cerr << "Invalid value for K" << endl;
+                dio->write("Invalid value for K\n");
                 failed = true;
-                getline(cin, userInput);
+                userInput = dio->read();
                 continue;
             }
             userInput.erase(0, userInput.find(' ') + 1);
-            string userDistanceMetric = userInput.substr(0, userInput.find('\r'));
+            string userDistanceMetric = userInput.substr(0, userInput.find('\n'));
             if (userDistanceMetric != "MAN" && userDistanceMetric != "CHE" && userDistanceMetric != "EUC") {
-                cerr << "Invalid distance metric" << endl;
+                dio->write("Invalid distance metric\n");
                 failed = true;
-                getline(cin, userInput);
+                userInput = dio->read();
                 continue;
             }
             *k = userK;

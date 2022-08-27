@@ -10,13 +10,12 @@
 #include <cstring>
 
 using namespace std;
-mutex m;
+//mutex m;
 
-void startCommunicationWithClient(int serverSocket) {
-    unique_lock<mutex> ul(m);
-    CLI cli(serverSocket);
-    cli.start();
-}
+//void startCommunicationWithClient(int serverSocket) {
+//    CLI cli(serverSocket);
+//    cli.start();
+//}
 
 int createServerSocket() {
     // Prints "SERVER" with bold and underline, in the middle of the terminal.
@@ -49,21 +48,24 @@ int createServerSocket() {
 }
 
 int main(int argc, char const *argv[]) {
-//    CLI cli;
-    // Responsible for the communication.
-    int serverSocket = createServerSocket();
-    thread threads[6];
-    threads[0] = thread(startCommunicationWithClient, serverSocket);
-    int i = 2;
-    // Runs until it being said to stop.
-    bool listening = true;
-    while (i <= 6) {
-        threads[i - 1] = thread(startCommunicationWithClient);
-        i++;
-    }
-    for (auto &thread: threads) {
-        thread.join();
-    }
-//    cli.start();
+//     CLI cli;
+//      Responsible for the communication.
+//     int serverSocket = createServerSocket();
+//     thread threads[6];
+//     threads[0] = thread(startCommunicationWithClient, serverSocket);
+//     int i = 2;
+//     // Runs until it being said to stop.
+//     bool listening = true;
+//     while (i <= 6) {
+//         threads[i - 1] = thread(startCommunicationWithClient, serverSocket);
+//         i++;
+//     }
+//     for (auto &thread: threads) {
+//         thread.join();
+//     }
+// //    cli.start();
+
+    CLI cli;
+    cli.start();
     return 0;
 }

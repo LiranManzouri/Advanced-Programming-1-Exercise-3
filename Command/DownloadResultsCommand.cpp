@@ -9,9 +9,8 @@
 using namespace std;
 
 void DownloadResultsCommand::execute() {
-    cout << "Please enter a path to save the output file locally." << endl;
-    string outputPath;
-    getline(cin, outputPath);
+    dio->write("Please enter a path to save the output file locally.\n");
+    string outputPath = dio->read();
     if (outputPath[0] == '\"') {
         outputPath.erase(0, 1);
     }
@@ -19,17 +18,17 @@ void DownloadResultsCommand::execute() {
         outputPath.pop_back();
     }
     outputPath.append("/results.txt");
-    cout << outputPath << endl;
+//    cout << outputPath << endl;
     ofstream outputFile;
     outputFile.open(outputPath);
     if (!outputFile.is_open()) {
-        cerr << "Error: file couldn't be opened!" << endl;
+        dio->write("Error: file couldn't be opened!\n");
         execute();
         return;
     }
 
     if (flowerTypes->empty()) {
-        cout << "You have to classify the data first!" << endl;
+        dio->write("You have to classify the data first!\n");
         return;
     }
 
@@ -37,12 +36,9 @@ void DownloadResultsCommand::execute() {
     for (auto &flowerType: *flowerTypes) {
         outputFile << i++ << " " << flowerType << endl;
     }
-    cout << "Done." << endl;
     outputFile.close();
     string userInput;
     do {
-        cin.ignore();
-        getline(cin, userInput);
-    } while (userInput.length() != 0);
-
+        userInput = dio->read();
+    } while (userInput != "\n");
 }

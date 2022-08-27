@@ -4,10 +4,39 @@
 //#include <iostream>
 //#include <cstring>
 //#include <fstream>
-//#include <GetUnclassifiedFileData.h>
-//
+//#include "../GetUnclassifiedFileData.h"
+//#include "../CLI.h"
+//#include <sys/socket.h>
+//#include <netinet/in.h>
+//#include <thread>
 //
 //using namespace std;
+//
+//void read(int sock, char *buffer, int data_len) {
+//    // Cleans the buffer.
+//    for (int i = 0; i < data_len; i++) {
+//        buffer[i] = '\0';
+//    }
+//
+//    // receives and checks that the connection is still fine and the info received successfully.
+//    long read_bytes = recv(sock, buffer, data_len, 0);
+//    if (read_bytes == 0) {
+//        cout << "Closed connection in CLIENT" << endl;
+//    } else if (read_bytes < 0) {
+//        cout << "Error reading in CLIENT" << endl;
+//        exit(1);
+//    }
+//}
+//
+//void write(int sock, char *message) {
+//    // Sends and checks that it sent successfully.
+//    unsigned long my_data_len = strlen(message);
+//    long sent_bytes = send(sock, message, my_data_len, 0);
+//    if (sent_bytes < 0) {
+//        cout << "Error sending to server in CLIENT" << endl;
+//        exit(1);
+//    }
+//}
 //
 ///*
 // * Main for the client, to communicate with the server.
@@ -15,67 +44,37 @@
 // * after that, the client writes the classifiers to the output file.
 // */
 //int main(int argc, char const *argv[]) {
-//    // Responsible for the communication.
-//    ClientFront front;
-//    // Saves the message.
-//    char message[4096] = "\0";
-//    // Stops the communication after getting the close message.
-//    while (strcmp(message, "close") != 0) {
-//        // Asks for the paths.
-//        cout << "==> Enter the unclassified path and the desired output path:" << endl;
-//        cout << "    NOTE: for closing the client socket and stop the communication" << endl
-//             << "    send here \"close\"." << endl;
-//        cin.getline(message, 4096);
-//        // Stops after "close".
-//        if (strcmp(message, "close") == 0) {
-//            break;
-//        }
-//        // Saves the paths.
-//        char unclassifiedPath[4096] = {0};
-//        char outputClassifiedPath[4096] = {0};
-//
-//        // Gets the paths.
-//        int i = 0, k = 0;
-//        while (message[i] != ' ' && message[i] != '\0') {
-//            unclassifiedPath[k] = message[i];
-//            i++, k++;
-//        }
-//        unclassifiedPath[k] = '\0';
-//        i++;
-//        k = 0;
-//        while (message[i] != '\0') {
-//            outputClassifiedPath[k] = message[i];
-//            i++, k++;
-//        }
-//        outputClassifiedPath[k] = '\0';
-//
-//        GetUnclassifiedFileData getUnclassifiedFileData(unclassifiedPath);
-//        strcpy(message, getUnclassifiedFileData.getData());
-//        // Send the unclassified path to the server.
-//        front.sendMessage(message);
-//
-//        // Gets the types of the flowers after the server classified them.
-//        char messageReceived[4096] = {0};
-//        strcpy(messageReceived, front.receiveMessage());
-//
-//        if (strcmp(messageReceived, "Rewrite the file path!") == 0) {
-//            cout << messageReceived << endl;
-//            continue;
-//        }
-//
-//        // Opens the output file.
-//        ofstream outputClassified;
-//        outputClassified.open(outputClassifiedPath);
-//        if (!outputClassified.is_open()) {
-//            cerr << "Error: file couldn't be opened!" << endl;
-//            exit(1);
-//        }
-//
-//        // Writes the classifiers to the output file.
-//        outputClassified << messageReceived << endl;
-//
-//        outputClassified.close();
-//        // Notifies that everything went successful.
-//        cout << "==> Output file created successfully!\n" << endl;
+//    const int port_no = 5555;
+//    // Creates the socket and checks it created successfully.
+//    int sock = socket(AF_INET, SOCK_STREAM, 0);
+//    if (sock < 0) {
+//        cout << "Error creating socket in CLIENT" << endl;
+//        exit(1);
 //    }
+//    // Initializes the info about the socket.
+//    struct sockaddr_in sin{};
+//    memset(&sin, 0, sizeof(sin));
+//    sin.sin_family = AF_INET;
+//    sin.sin_addr.s_addr = INADDR_ANY;
+//    sin.sin_port = htons(port_no);
+//    // Connecting the socket to the server.
+//    if (connect(sock, (struct sockaddr *) &sin, sizeof(sin)) < 0) {
+//        cout << "Error connecting to server in CLIENT" << endl;
+//        exit(1);
+//    }
+//
+//    const int data_len = 4096;
+//    char buffer[4096] = {0};
+//
+//    thread readThread(read, sock, buffer, data_len);
+//    thread writeThread(write, sock, buffer);
+//
+//    while (strcmp(buffer, "close") != 0) {
+//
+//        readThread.join();
+//        writeThread.join();
+//
+//    }
+//
+//
 //}

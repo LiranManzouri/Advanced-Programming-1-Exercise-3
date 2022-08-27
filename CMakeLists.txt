@@ -8,6 +8,7 @@ include_directories(.)
 include_directories(Client)
 include_directories(Server)
 include_directories(Command)
+include_directories(IO)
 
 add_executable(Advanced_Programming_1___Exercise_3 Client/Client.cpp
         Client/Client.h
@@ -37,6 +38,8 @@ add_executable(Advanced_Programming_1___Exercise_3 Client/Client.cpp
         IO/SocketIO.h
         IO/StandardIO.cpp
         IO/StandardIO.h
+        ClientHandler.cpp
+        ClientHandler.h
         CLI.cpp
         CLI.h
         tempMain.cpp

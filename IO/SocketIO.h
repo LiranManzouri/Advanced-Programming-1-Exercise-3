@@ -8,12 +8,14 @@
 
 #include "DefaultIO.h"
 
-class SocketIO : DefaultIO {
-
+class SocketIO : public DefaultIO {
+    const int clientSock;
 public:
+    explicit SocketIO(int clientSock) : clientSock(clientSock) {}
+
     std::string read() override;
 
-    void write(std::string) override;
+    void write(std::string message) override;
 
     // func1: sendFromClientToServer(...);
     // func2: receiveInClientFromServer(...);
