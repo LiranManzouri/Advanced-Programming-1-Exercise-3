@@ -37,8 +37,4 @@ void DownloadResultsCommand::execute() {
         outputFile << i++ << " " << flowerType << endl;
     }
     outputFile.close();
-    string userInput;
-    do {
-        userInput = dio->read();
-    } while (userInput != "\n");
 }

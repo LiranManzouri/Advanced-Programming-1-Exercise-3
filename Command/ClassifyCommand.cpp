@@ -11,12 +11,14 @@
 using namespace std;
 
 void ClassifyCommand::execute() {
-    GetUnclassifiedFileData getTrainFileData("TrainFile.csv");
-    strcpy(classifiedTrainData, getTrainFileData.getData().c_str());
+    // GetUnclassifiedFileData getTrainFileData("TrainFile.csv");
+    // strcpy(classifiedTrainData, getTrainFileData.getData().c_str());
 
-    GetUnclassifiedFileData getTestFileData("TestFile.csv");
-    strcpy(unclassifiedTestData, getTrainFileData.getData().c_str());
+    // GetUnclassifiedFileData getTestFileData("TestFile.csv");
+    // strcpy(unclassifiedTestData, getTrainFileData.getData().c_str());
 
+    // CreateClassifiedFiles createClassifiedFiles(*k, unclassifiedTestData);
+    // *flowerTypes = createClassifiedFiles.createClassified();
     CreateClassifiedFiles createClassifiedFiles(*k, unclassifiedTestData);
     *flowerTypes = createClassifiedFiles.createClassified();
     dio->write("classifying data complete\n");

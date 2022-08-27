@@ -24,7 +24,6 @@ void CLI::start() {
 }
 
 void CLI::printMenu() {
-    unique_lock<mutex> ul(m);
     string message = "Welcome to the KNN Classifier Server. Please choose an option:\n";
     int i = 1;
     for (auto &command: commands) {

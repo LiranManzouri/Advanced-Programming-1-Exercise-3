@@ -6,29 +6,27 @@
 #include "../GetUnclassifiedFileData.h"
 #include <iostream>
 #include <fstream>
+#include <cstring>
 
 using namespace std;
 
 void UploadCommand::execute() {
 
     dio->write("Please upload your local train CSV file.\n");
-    ofstream outTrainFileInServer("TrainFile.csv");
-    string line;
-    while ((line = dio->read()).length() != 0) {
-        outTrainFileInServer << line << endl;
-    }
 
-    outTrainFileInServer.close();
+    string path = dio->read();
+    GetUnclassifiedFileData getTrainFileData(dio, path);
+    strcpy(classifiedTrainData, getTrainFileData.getData().c_str());
+
     dio->write("Upload complete.\n");
 
-
     dio->write("Please upload your local test CSV file.\n");
-    ofstream outTestFileInServer("TestFile.csv");
-    while (!(line = dio->read()).empty()) {
-        outTestFileInServer << line << endl;
-    }
-    outTestFileInServer.close();
-    dio->write("Upload complete.");
+
+    path = dio->read();
+    GetUnclassifiedFileData getTestFileData(dio, path);
+    strcpy(unclassifiedTestData, getTestFileData.getData().c_str());
+
+    dio->write("Upload complete.\n");
 
 
 }

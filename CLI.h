@@ -23,7 +23,7 @@ class CLI {
 public:
 //    int getNewClient() const;
 
-    /*explicit*/ CLI(/*int clientSocket*//*, int clientSocket*/) : socketIo(/*clientSocket*/) {
+    explicit CLI(/*int clientSocket*//*, int clientSocket*/) : socketIo(/*clientSocket*/) {
 //        clientSocket = getNewClient();
 //    std::string unclassifiedPath;
         int k = 5;

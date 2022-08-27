@@ -13,12 +13,16 @@ void AlgoSettingsCommand::execute() {
                           ", distance metric = " + (*distanceMetric) + "\n";
     dio->write(algoSettings);
     string userInput = dio->read();
-    if (userInput == "\n") {
+    if (userInput.empty()) {
         return;
     } else {
         bool failed;
         do {
             failed = false;
+            if (userInput.empty()) {
+                failed = false;
+                continue;
+            }
             string token = userInput.substr(0, userInput.find(' '));
             for (char c: token) {
                 if (!isdigit(c)) {

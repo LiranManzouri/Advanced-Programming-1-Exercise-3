@@ -15,9 +15,9 @@ string GetUnclassifiedFileData::getData() {
     unclassifiedReader.readAndSaveFlowers();
     int numOfUnclassifiedFlowers = unclassifiedReader.getNumOfFlowers();
     if (numOfUnclassifiedFlowers == -1) {
-        cerr << "Error: file couldn't be opened, Rewrite the file path!" << endl;
+        dio->write("Error: file couldn't be opened, Rewrite the file path!\n");
 //        cout << "Please upload your local train CSV file." << endl;
-        cin >> unclassifiedPath;
+        unclassifiedPath = dio->read();
         return getData();
     }
     vector<string> flowerTypesByOrder;

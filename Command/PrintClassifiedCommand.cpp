@@ -22,5 +22,5 @@ void PrintClassifiedCommand::execute() {
     string userInput;
     do {
         userInput = dio->read();
-    } while (userInput != "\n");
+    } while (!userInput.empty());
 }
