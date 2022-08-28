@@ -72,7 +72,7 @@ int main(int argc, char const *argv[]) {
         // Accepts the client and checks it went successfully.
         struct sockaddr_in client_sin{};
         unsigned int addr_len = sizeof(client_sin);
-        alarm(8);
+        alarm(90);
         int client_sock = accept(sock, (struct sockaddr *) &client_sin, &addr_len);
         alarm(0);
         if (client_sock < 0) {
