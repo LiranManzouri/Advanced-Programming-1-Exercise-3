@@ -10,9 +10,14 @@
 #include <thread>
 #include <mutex>
 #include <unistd.h>
+#include <csignal>
 
 using namespace std;
 // mutex m;
+
+void alarmHandler(int signum) {
+    cout << "Handle!" << endl;
+}
 
 string read(int sock) {
     const int data_len = 4096;
@@ -53,19 +58,35 @@ int main(int argc, char const *argv[]) {
         exit(1);
     }
     // Initializes the info about the socket.
+    struct sigaction sa{};
+    sa.sa_handler = alarmHandler;
+    sigemptyset(&sa.sa_mask);
+    if (sigaction(SIGALRM, &sa, nullptr) == -1) {
+        cout << "WOW" << endl;
+        return 0;
+    }
     struct sockaddr_in sin{};
     memset(&sin, 0, sizeof(sin));
     sin.sin_family = AF_INET;
     sin.sin_addr.s_addr = INADDR_ANY;
     sin.sin_port = htons(port_no);
     // Connecting the socket to the server.
-//    signal(sigaction, );
-//    alarm(15);
-    if (connect(sock, (struct sockaddr *) &sin, sizeof(sin)) < 0) {
+    int rv;
+    alarm(8);
+    if ((rv = connect(sock, (struct sockaddr *) &sin, sizeof(sin))) < 0) {
         cout << "Error connecting to server in CLIENT" << endl;
-        exit(1);
+        // exit(1);
     }
-//    alarm(0);
+    alarm(0);
+    if (rv == -1) {
+        if (errno == EINTR) {
+            cout << "Timout!" << endl;
+            return 0;
+        } else {
+            cout << "bruh" << endl;
+            return 0;
+        }
+    }
     while (true) {
         string messageFromServer = read(sock);
         if (messageFromServer == "[close]") {

@@ -8,6 +8,7 @@
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <unistd.h>
+#include <csignal>
 
 using namespace std;
 
@@ -56,9 +57,9 @@ int main(int argc, char const *argv[]) {
         exit(1);
     }
     int i = 0;
+
     // Runs until it being said to stop.
-    while (i < 10) {
-//        alarm(15);
+    while (true) {
         // Accepts the client and checks it went successfully.
         struct sockaddr_in client_sin{};
         unsigned int addr_len = sizeof(client_sin);
@@ -71,9 +72,9 @@ int main(int argc, char const *argv[]) {
         clientThreads.push_back(move(newClientThread));
         i++;
         // newClientThread.join();
-//        alarm(0);
+        alarm(0);
     }
-    for(auto &t : clientThreads) {
+    for (auto &t: clientThreads) {
         t.join();
     }
 }
