@@ -29,7 +29,7 @@ string read(int sock) {
     return buffer;
 }
 
-void write(int sock, string message) {
+void write(int sock, const string& message) {
     // cout << "message is = <" << message << ">" << endl;
     // getline(cin, message);
     // Sends and checks that it sent successfully.
