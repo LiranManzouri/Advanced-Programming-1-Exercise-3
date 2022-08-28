@@ -18,6 +18,11 @@
 class CLI {
     DefaultIO *dio;
     Command *commands[5]{};
+    int k = 5;
+    char classifiedTrainData[4096] = {0};
+    char unclassifiedTestData[4096] = {0};
+    std::string distanceMetric = "EUC";
+    std::vector<std::string> flowerTypes;
     void printMenu();
 
 public:
@@ -26,11 +31,6 @@ public:
     explicit CLI(DefaultIO * dio/*, int clientSocket*/) : dio(dio) {
 //        clientSocket = getNewClient();
 //    std::string unclassifiedPath;
-        int k = 5;
-        char classifiedTrainData[4096];
-        char unclassifiedTestData[4096];
-        std::string distanceMetric = "EUC";
-        std::vector<std::string> flowerTypes;
         commands[0] = new UploadCommand(&k, classifiedTrainData, unclassifiedTestData, &distanceMetric,
                                         &flowerTypes, dio);
         commands[1] = new AlgoSettingsCommand(&k, classifiedTrainData, unclassifiedTestData, &distanceMetric,

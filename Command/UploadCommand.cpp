@@ -18,7 +18,6 @@ void UploadCommand::execute() {
     string fileData = dio->read();
 //    GetUnclassifiedFileData getTrainFileData(dio, path);
 //    strcpy(classifiedTrainData, getTrainFileData.getData().c_str());
-
     strcpy(classifiedTrainData, fileData.c_str());
 
     // dio->write("Upload complete.\n");
@@ -30,7 +29,6 @@ void UploadCommand::execute() {
 
 //    GetUnclassifiedFileData getTestFileData(dio, path);
 //    strcpy(unclassifiedTestData, getTestFileData.getData().c_str());
-
     strcpy(unclassifiedTestData, fileData.c_str());
 
     dio->write("[Print]:Upload complete.\n");

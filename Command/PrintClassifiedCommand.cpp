@@ -4,23 +4,28 @@
 
 #include "PrintClassifiedCommand.h"
 #include <iostream>
+#include <string>
 
 using namespace std;
 
 void PrintClassifiedCommand::execute() {
     if (flowerTypes->empty()) {
-        dio->write("You have to classify the data first!\n");
+        dio->write("[Print]:You have to classify the data first!\n");
+        dio->read();
         return;
     }
 
+    string message;
     int i = 1;
     for (auto &flowerType: *flowerTypes) {
-        dio->write(to_string(i++) + " " + flowerType + "\n");
+        message.append(to_string(i++) + " " + flowerType + "\n");
     }
-    dio->write("Done.\n");
-
+    message.append("Done.\n");
+    dio->write(message);
     string userInput;
-    do {
+    userInput = dio->read();
+    while (!(userInput == "[Enter]")) {
+        dio->write("[Waiting for enter]");
         userInput = dio->read();
-    } while (!userInput.empty());
+    }
 }

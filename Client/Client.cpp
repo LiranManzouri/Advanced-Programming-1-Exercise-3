@@ -76,17 +76,48 @@ int main(int argc, char const *argv[]) {
             string path;
             getline(cin, path);
             // cout << path << endl;
-            GetUnclassifiedFileData getTrainFileData(path);
-            messageToServer = getTrainFileData.getData();
+            GetUnclassifiedFileData getFileData(path);
+            messageToServer = getFileData.getData();
             write(sock, messageToServer);
             // cout << messageToServer << endl;
         } else if (messageFromServer.rfind("[Print]:", 0) == 0) {
             cout << messageFromServer.erase(0, 8);
             write(sock, "Done");
             // cout << messageFromServer;
+        } else if (messageFromServer.rfind("[Create File]:", 0) == 0) {
+            cout << messageFromServer.erase(0, 14);
+
+            string path;
+            getline(cin, path);
+
+            if (path[0] == '\"') {
+                path.erase(0, 1);
+            }
+            if (path[path.length() - 1] == '\"') {
+                path.pop_back();
+            }
+            path.append("/results.txt");
+            //    cout << outputPath << endl;
+            ofstream outputFile;
+            cout << "path: <" << path << ">" << endl;
+            outputFile.open(path);
+            while (!outputFile.is_open()) {
+                cout << "Wrong path! Try again:" << endl;
+                getline(cin, path);
+            }
+            write(sock, "Done");
+            messageFromServer = read(sock);
+            outputFile << messageFromServer;
+            write(sock, "Done");
         } else {
-            cout << messageFromServer;
+            if (!(messageFromServer == "[Waiting for enter]")) {
+                cout << messageFromServer;
+            }
             getline(cin, messageToServer);
+            if(messageToServer.empty()) {
+                messageToServer = "[Enter]";
+            }
+            // cout << "is enter got? {" << messageToServer << "}" << endl;
             write(sock, messageToServer);
         }
         // messageToServer.append("\0");

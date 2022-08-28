@@ -16,6 +16,7 @@ void CLI::start() {
     int choose = stoi(clientInput);
     while (choose != 8) {
         commands[choose - 1]->execute();
+        cout << "menu is..." << endl;
         printMenu();
         clientInput = dio->read();
         choose = stoi(clientInput);

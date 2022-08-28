@@ -5,36 +5,26 @@
 #include "DownloadResultsCommand.h"
 #include <iostream>
 #include <fstream>
+#include <string>
 
 using namespace std;
 
 void DownloadResultsCommand::execute() {
-    dio->write("Please enter a path to save the output file locally.\n");
-    string outputPath = dio->read();
-    if (outputPath[0] == '\"') {
-        outputPath.erase(0, 1);
-    }
-    if (outputPath[outputPath.length() - 1] == '\"') {
-        outputPath.pop_back();
-    }
-    outputPath.append("/results.txt");
-//    cout << outputPath << endl;
-    ofstream outputFile;
-    outputFile.open(outputPath);
-    if (!outputFile.is_open()) {
-        dio->write("Error: file couldn't be opened!\n");
-        execute();
-        return;
-    }
-
     if (flowerTypes->empty()) {
-        dio->write("You have to classify the data first!\n");
+        dio->write("[Print]:You have to classify the data first!\n");
+        dio->read();
         return;
     }
 
+    dio->write("[Create File]:Please enter a path to save the output file locally.\n");
+    dio->read();
+
+    string outputData;
     int i = 1;
     for (auto &flowerType: *flowerTypes) {
-        outputFile << i++ << " " << flowerType << endl;
+        outputData.append(to_string(i++) + " " + flowerType + "\n");
     }
-    outputFile.close();
+
+    dio->write(outputData);
+    dio->read();
 }

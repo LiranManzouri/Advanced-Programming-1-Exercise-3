@@ -16,7 +16,7 @@ string GetUnclassifiedFileData::getData() {
     int numOfUnclassifiedFlowers = unclassifiedReader.getNumOfFlowers();
     if (numOfUnclassifiedFlowers == -1) {
 //        dio->write("Error: file couldn't be opened, Rewrite the file path!\n");
-        cout << "Please upload your local train CSV file." << endl;
+        cout << "Wrong file path! Try again:" << endl;
 //        unclassifiedPath = dio->read();
         getline(cin, unclassifiedPath);
         return getData();

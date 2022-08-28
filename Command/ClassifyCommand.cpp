@@ -21,5 +21,6 @@ void ClassifyCommand::execute() {
     // *flowerTypes = createClassifiedFiles.createClassified();
     CreateClassifiedFiles createClassifiedFiles(*k, unclassifiedTestData);
     *flowerTypes = createClassifiedFiles.createClassified();
-    dio->write("classifying data complete\n");
+    dio->write("[Print]:classifying data complete\n");
+    dio->read();
 }
