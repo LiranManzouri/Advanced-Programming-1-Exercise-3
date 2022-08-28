@@ -6,21 +6,24 @@
 #include <iostream>
 #include <netinet/in.h>
 #include <unistd.h>
+#include <mutex>
 
 using namespace std;
 
 std::string SocketIO::read() {
-    string message;
-    char buffer;
+    // string message;
+    const int data_len = 4096;
+    char buffer[4096] = {0};
     // receives and checks that the connection is still fine and the info received successfully.
-    long read_bytes = recv(clientSock, &buffer, sizeof(char), 0);
-    if (read_bytes == 0) {
-        cerr << "==> Closed connection with the client! " << endl;
-    } else if (read_bytes < 0) {
+    long read_bytes = recv(clientSock, &buffer, data_len, 0);
+    /*if (read_bytes == 0) {
+        cout << "Closed connection in SERVER" << endl;
+    } else */if (read_bytes < 0) {
         cerr << "Error reading in SERVER" << endl;
         exit(1);
-    } else {
-        while (buffer != '\n') {
+    }/* else {
+        while (buffer != '\0') {
+            cout << "buf = " << buffer;
             message.push_back(buffer);
             read_bytes = recv(clientSock, &buffer, sizeof(char), 0);
             if (read_bytes == 0) {
@@ -33,9 +36,10 @@ std::string SocketIO::read() {
             }
         }
     }
+    */
 
     // Returns the received message.
-    return message;
+    return buffer;
 }
 
 void SocketIO::write(std::string message) {

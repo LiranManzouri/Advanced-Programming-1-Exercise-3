@@ -8,17 +8,16 @@
 #include <netinet/in.h>
 
 using namespace std;
-mutex m;
 
 void CLI::start() {
     printMenu();
     string clientInput;
-    clientInput = socketIo.read();
+    clientInput = dio->read();
     int choose = stoi(clientInput);
     while (choose != 8) {
         commands[choose - 1]->execute();
         printMenu();
-        clientInput = socketIo.read();
+        clientInput = dio->read();
         choose = stoi(clientInput);
     }
 }
@@ -29,5 +28,5 @@ void CLI::printMenu() {
     for (auto &command: commands) {
         message.append(to_string(i++) + ". " + command->getDescription() + "\n");
     }
-    socketIo.write(message);
+    dio->write(message);
 }

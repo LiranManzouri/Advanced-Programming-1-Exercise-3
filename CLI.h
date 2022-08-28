@@ -16,14 +16,14 @@
 #include "Command/DownloadResultsCommand.h"
 
 class CLI {
-    StandardIO socketIo;
+    DefaultIO *dio;
     Command *commands[5]{};
     void printMenu();
 
 public:
 //    int getNewClient() const;
 
-    explicit CLI(/*int clientSocket*//*, int clientSocket*/) : socketIo(/*clientSocket*/) {
+    explicit CLI(DefaultIO * dio/*, int clientSocket*/) : dio(dio) {
 //        clientSocket = getNewClient();
 //    std::string unclassifiedPath;
         int k = 5;
@@ -32,15 +32,15 @@ public:
         std::string distanceMetric = "EUC";
         std::vector<std::string> flowerTypes;
         commands[0] = new UploadCommand(&k, classifiedTrainData, unclassifiedTestData, &distanceMetric,
-                                        &flowerTypes, &socketIo);
+                                        &flowerTypes, dio);
         commands[1] = new AlgoSettingsCommand(&k, classifiedTrainData, unclassifiedTestData, &distanceMetric,
-                                              &flowerTypes, &socketIo);
+                                              &flowerTypes, dio);
         commands[2] = new ClassifyCommand(&k, classifiedTrainData, unclassifiedTestData, &distanceMetric,
-                                          &flowerTypes, &socketIo);
+                                          &flowerTypes, dio);
         commands[3] = new PrintClassifiedCommand(&k, classifiedTrainData, unclassifiedTestData, &distanceMetric,
-                                                 &flowerTypes, &socketIo);
+                                                 &flowerTypes, dio);
         commands[4] = new DownloadResultsCommand(&k, classifiedTrainData, unclassifiedTestData, &distanceMetric,
-                                                 &flowerTypes, &socketIo);
+                                                 &flowerTypes, dio);
     }
 
     void start();

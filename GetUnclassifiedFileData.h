@@ -10,11 +10,10 @@
 #include "IO/DefaultIO.h"
 
 class GetUnclassifiedFileData {
-    DefaultIO *dio;
     std::string unclassifiedPath;
 public:
-    explicit GetUnclassifiedFileData(DefaultIO *dio, std::string unclassifiedPath) :
-            dio(dio), unclassifiedPath(std::move(unclassifiedPath)) {}
+    explicit GetUnclassifiedFileData(std::string unclassifiedPath) : unclassifiedPath(std::move(unclassifiedPath)) {}
+
     std::string getData();
 };
 

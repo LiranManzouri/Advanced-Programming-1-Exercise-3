@@ -7,11 +7,15 @@
 #include <thread>
 #include <sys/socket.h>
 #include <netinet/in.h>
+#include <unistd.h>
 
 using namespace std;
 
-void func() {
-    cout << "ok" << endl;
+void clientHandler(int client_sock) {
+    SocketIO socketIo(client_sock);
+    CLI cli(&socketIo);
+    cli.start();
+    close(client_sock);
 }
 
 /*
@@ -44,9 +48,10 @@ int main(int argc, char const *argv[]) {
         exit(1);
     }
 
+    vector<thread> clientThreads;
+
     // Runs until it being said to stop.
-//    bool listening = true;
-    while(true) {
+    while (true) {
         // Waits for a client.
         if (listen(sock, 3) < 0) {
             cout << "Error listening to a socket in SERVER" << endl;
@@ -60,7 +65,10 @@ int main(int argc, char const *argv[]) {
             cout << "Error accepting client in SERVER" << endl;
             exit(1);
         }
-        CLI cli(client_sock);
-        cli.start();
+        thread newClientThread(clientHandler, client_sock);
+//        clientThreads.push_back(move(newClientThread));
+
+        newClientThread.join();
+
     }
 }

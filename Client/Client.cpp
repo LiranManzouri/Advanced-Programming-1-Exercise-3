@@ -11,14 +11,11 @@
 #include <mutex>
 
 using namespace std;
-mutex m;
+// mutex m;
 
-void read(int sock, char *buffer, int data_len) {
-    // Cleans the buffer.
-    for (int i = 0; i < data_len; i++) {
-        buffer[i] = '\0';
-    }
-
+string read(int sock) {
+    const int data_len = 4096;
+    char buffer[4096] = {0};
     // receives and checks that the connection is still fine and the info received successfully.
     long read_bytes = recv(sock, buffer, data_len, 0);
     if (read_bytes == 0) {
@@ -27,13 +24,14 @@ void read(int sock, char *buffer, int data_len) {
         cout << "Error reading in CLIENT" << endl;
         exit(1);
     }
+    return buffer;
 }
 
-void write(int sock, char *message) {
-    cin.getline(message, strlen(message));
+void write(int sock, string message) {
+    // cout << "message is = <" << message << ">" << endl;
+    // getline(cin, message);
     // Sends and checks that it sent successfully.
-    unsigned long my_data_len = strlen(message);
-    long sent_bytes = send(sock, message, my_data_len, 0);
+    long sent_bytes = send(sock, message.c_str(), message.length(), 0);
     if (sent_bytes < 0) {
         cout << "Error sending to server in CLIENT" << endl;
         exit(1);
@@ -64,18 +62,36 @@ int main(int argc, char const *argv[]) {
         cout << "Error connecting to server in CLIENT" << endl;
         exit(1);
     }
-
-    const int data_len = 4096;
-    char buffer[4096] = {0};
-
-    thread readThread(read, sock, buffer, data_len);
-    thread writeThread(write, sock, buffer);
-
-    while (strcmp(buffer, "close") != 0) {
-        cout << "WOW" << endl;
-        readThread.join();
-        writeThread.join();
+    while (true) {
+        string messageFromServer = read(sock);
+        if (messageFromServer == "close") {
+            write(sock, "close");
+            break;
+        }
+        string messageToServer;
+        // cout << endl << endl << "message from server = {" << messageFromServer << "}" << endl << endl;
+        // cout << "message: <" << messageFromServer << ">";
+        if (messageFromServer.rfind("[File]:", 0) == 0) {
+            cout << messageFromServer.erase(0, 7);
+            string path;
+            getline(cin, path);
+            // cout << path << endl;
+            GetUnclassifiedFileData getTrainFileData(path);
+            messageToServer = getTrainFileData.getData();
+            write(sock, messageToServer);
+            // cout << messageToServer << endl;
+        } else if (messageFromServer.rfind("[Print]:", 0) == 0) {
+            cout << messageFromServer.erase(0, 8);
+            write(sock, "Done");
+            // cout << messageFromServer;
+        } else {
+            cout << messageFromServer;
+            getline(cin, messageToServer);
+            write(sock, messageToServer);
+        }
+        // messageToServer.append("\0");
     }
+
 
 
 }
