@@ -18,7 +18,7 @@ protected:
     int *k;
     char *classifiedTrainData;
     char *unclassifiedTestData;
-    std::string *distanceMetric = new std::string("EUC");
+    std::string *distanceMetric/* = new std::string("EUC")*/;
     std::vector<std::string> *flowerTypes;
 public:
     virtual void execute() = 0;
@@ -34,6 +34,8 @@ public:
         this->unclassifiedTestData = unclassifiedTestData;
         this->flowerTypes = flowerTypes;
     }
+
+    ~Command() = default;
 
 };
 

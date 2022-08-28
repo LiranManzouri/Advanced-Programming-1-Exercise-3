@@ -21,6 +21,7 @@ void CLI::start() {
         clientInput = dio->read();
         choose = stoi(clientInput);
     }
+    dio->write("[close]");
 }
 
 void CLI::printMenu() {

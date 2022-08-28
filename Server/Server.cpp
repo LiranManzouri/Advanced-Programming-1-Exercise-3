@@ -50,13 +50,14 @@ int main(int argc, char const *argv[]) {
 
     vector<thread> clientThreads;
 
+    // Waits for a client.
+    if (listen(sock, 3) < 0) {
+        cout << "Error listening to a socket in SERVER" << endl;
+        exit(1);
+    }
+    int i = 0;
     // Runs until it being said to stop.
-    while (true) {
-        // Waits for a client.
-        if (listen(sock, 3) < 0) {
-            cout << "Error listening to a socket in SERVER" << endl;
-            exit(1);
-        }
+    while (i < 10) {
         // Accepts the client and checks it went successfully.
         struct sockaddr_in client_sin{};
         unsigned int addr_len = sizeof(client_sin);
@@ -66,9 +67,11 @@ int main(int argc, char const *argv[]) {
             exit(1);
         }
         thread newClientThread(clientHandler, client_sock);
-//        clientThreads.push_back(move(newClientThread));
-
-        newClientThread.join();
-
+        clientThreads.push_back(move(newClientThread));
+        i++;
+        // newClientThread.join();
+    }
+    for(auto &t : clientThreads) {
+        t.join();
     }
 }

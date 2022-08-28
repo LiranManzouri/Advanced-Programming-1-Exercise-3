@@ -43,6 +43,12 @@ public:
                                                  &flowerTypes, dio);
     }
 
+    ~CLI() {
+        for (auto &command : commands) {
+            delete command;
+        }
+    }
+
     void start();
 };
 

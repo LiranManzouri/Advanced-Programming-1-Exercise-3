@@ -64,8 +64,8 @@ int main(int argc, char const *argv[]) {
     }
     while (true) {
         string messageFromServer = read(sock);
-        if (messageFromServer == "close") {
-            write(sock, "close");
+        if (messageFromServer == "[close]") {
+            // write(sock, "close");
             break;
         }
         string messageToServer;
