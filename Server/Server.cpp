@@ -19,6 +19,9 @@ void clientHandler(int client_sock) {
     close(client_sock);
 }
 
+void alarmHandler(int signum) {
+}
+
 /*
  * Main for the server, to communicate with the clients.
  * The server gets a path to unclassified flowers from a client and
@@ -60,19 +63,38 @@ int main(int argc, char const *argv[]) {
 
     // Runs until it being said to stop.
     while (true) {
+        struct sigaction sa{};
+        sa.sa_handler = alarmHandler;
+        sigemptyset(&sa.sa_mask);
+        if (sigaction(SIGALRM, &sa, nullptr) == -1) {
+            break;
+        }
         // Accepts the client and checks it went successfully.
         struct sockaddr_in client_sin{};
         unsigned int addr_len = sizeof(client_sin);
+        alarm(8);
         int client_sock = accept(sock, (struct sockaddr *) &client_sin, &addr_len);
+        alarm(0);
         if (client_sock < 0) {
-            cout << "Error accepting client in SERVER" << endl;
-            exit(1);
+            if (errno == EINTR) {
+            cout << "Timout!" << endl;
+            close(sock);
+            break;
+        } else {
+            cout << "bruh" << endl;
+            return 0;
         }
+        }
+//        if (client_sock < 0) {
+//            cout << "Error accepting client in SERVER" << endl;
+//            // exit(1);
+//            break;
+//        }
         thread newClientThread(clientHandler, client_sock);
         clientThreads.push_back(move(newClientThread));
         i++;
         // newClientThread.join();
-        alarm(0);
+        // alarm(0);
     }
     for (auto &t: clientThreads) {
         t.join();
