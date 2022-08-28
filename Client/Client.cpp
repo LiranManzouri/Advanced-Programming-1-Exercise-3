@@ -9,6 +9,7 @@
 #include <netinet/in.h>
 #include <thread>
 #include <mutex>
+#include <unistd.h>
 
 using namespace std;
 // mutex m;
@@ -58,10 +59,13 @@ int main(int argc, char const *argv[]) {
     sin.sin_addr.s_addr = INADDR_ANY;
     sin.sin_port = htons(port_no);
     // Connecting the socket to the server.
+//    signal(sigaction, );
+//    alarm(15);
     if (connect(sock, (struct sockaddr *) &sin, sizeof(sin)) < 0) {
         cout << "Error connecting to server in CLIENT" << endl;
         exit(1);
     }
+//    alarm(0);
     while (true) {
         string messageFromServer = read(sock);
         if (messageFromServer == "[close]") {

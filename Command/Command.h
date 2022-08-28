@@ -35,7 +35,7 @@ public:
         this->flowerTypes = flowerTypes;
     }
 
-    ~Command() = default;
+    virtual ~Command() = default;
 
 };
 
