@@ -115,6 +115,12 @@ int main(int argc, char const *argv[]) {
             while (!outputFile.is_open()) {
                 cout << "Wrong path! Try again:" << endl;
                 getline(cin, path);
+                if (path[0] == '\"') {
+                    path.erase(0, 1);
+                }
+                if (path[path.length() - 1] == '\"') {
+                    path.pop_back();
+                }
             }
             write(sock, "Done");
             messageFromServer = read(sock);
