@@ -27,7 +27,7 @@ public:
         return description;
     }
 
-    Command(std::string description, int *k, char classifiedTrainData[4096], char unclassifiedTestData[4096],
+    Command(std::string description, int *k, char classifiedTrainData[8192], char unclassifiedTestData[8192],
             std::string *distanceMetric, std::vector<std::string> *flowerTypes, DefaultIO *dio)
             : description(std::move(description)), k(k), distanceMetric(distanceMetric), dio(dio) {
         this->classifiedTrainData = classifiedTrainData;

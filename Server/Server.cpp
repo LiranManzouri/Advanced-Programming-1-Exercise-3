@@ -77,13 +77,13 @@ int main(int argc, char const *argv[]) {
         alarm(0);
         if (client_sock < 0) {
             if (errno == EINTR) {
-            cout << "Timout!" << endl;
-            close(sock);
-            break;
-        } else {
-            cout << "bruh" << endl;
-            return 0;
-        }
+                cout << "Timout!" << endl;
+                close(sock);
+                break;
+            } else {
+                cout << "bruh" << endl;
+                return 0;
+            }
         }
 //        if (client_sock < 0) {
 //            cout << "Error accepting client in SERVER" << endl;

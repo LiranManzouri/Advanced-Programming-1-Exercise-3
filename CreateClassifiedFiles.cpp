@@ -16,7 +16,7 @@ using namespace std;
  */
 vector<string> CreateClassifiedFiles::createClassified() const {
     //reads the flowers
-    ReadFlowers classifiedReader = ReadFlowers("classified.csv");
+    /*ReadFlowers classifiedReader = ReadFlowers("classified.csv");
     classifiedReader.readAndSaveFlowers();
 
     int numOfClassifiedFlowers = classifiedReader.getNumOfFlowers();
@@ -24,19 +24,43 @@ vector<string> CreateClassifiedFiles::createClassified() const {
         return {};
     }
 
-    Flower *classifiedFlowers = classifiedReader.getFlowers();
+    classifiedFlowers = classifiedReader.getFlowers();*/
+
+    int numOfClassifiedFlowers = 0;
+    string currentData = classifiedFlowers;
+    while (!currentData.empty()) {
+        currentData.erase(0, currentData.find('\n') + 1);
+        numOfClassifiedFlowers++;
+    }
 
     vector<string> flowerTypesByOrder;
 
-    string info = flowersInfo;
+    Flower classified[numOfClassifiedFlowers];
     int i = 0;
+    currentData = classifiedFlowers;
+    while (!currentData.empty()) {
+        string line = currentData.substr(0, classifiedFlowers.find('\n'));
+        currentData.erase(0, currentData.find('\n') + 1);
+        if (line.empty()) {
+            break;
+        }
+        CreateFlowerByLine createFlowerByLine(line);
+        Flower flower = createFlowerByLine.getFlower();
+        classified[i] = flower;
+        i++;
+    }
+    string info = flowersInfoToClassify;
+    /*int */i = 0;
     //writes the classified info to the array.
     while (!info.empty()) {
         string line = info.substr(0, info.find('\n'));
         info.erase(0, info.find('\n') + 1);
+        if (line.empty()) {
+            break;
+        }
         CreateFlowerByLine createFlowerByLine(line);
         const Flower unclassifiedFlower = createFlowerByLine.getFlower();
-        ClassifyFlower classifyFlower(unclassifiedFlower, classifiedFlowers, numOfClassifiedFlowers, k);
+        ClassifyFlower classifyFlower(unclassifiedFlower, classified, numOfClassifiedFlowers, k);
         flowerTypesByOrder.push_back(classifyFlower.euclideanClassify());
         i++;
     }

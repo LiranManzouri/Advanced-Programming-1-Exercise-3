@@ -12,8 +12,8 @@ using namespace std;
 
 std::string SocketIO::read() {
     // string message;
-    const int data_len = 4096;
-    char buffer[4096] = {0};
+    const int data_len = 8192;
+    char buffer[8192] = {0};
     // receives and checks that the connection is still fine and the info received successfully.
     long read_bytes = recv(clientSock, &buffer, data_len, 0);
     /*if (read_bytes == 0) {

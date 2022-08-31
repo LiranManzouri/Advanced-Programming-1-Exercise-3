@@ -14,13 +14,14 @@
 #include "Command/ClassifyCommand.h"
 #include "Command/PrintClassifiedCommand.h"
 #include "Command/DownloadResultsCommand.h"
+#include "Command/ConfusionMatrixCommand.h"
 
 class CLI {
     DefaultIO *dio;
-    Command *commands[5]{};
+    Command *commands[6]{};
     int k = 5;
-    char classifiedTrainData[4096] = {0};
-    char unclassifiedTestData[4096] = {0};
+    char classifiedTrainData[8192] = {0};
+    char unclassifiedTestData[8192] = {0};
     std::string distanceMetric = "EUC";
     std::vector<std::string> flowerTypes;
     void printMenu();
@@ -41,6 +42,9 @@ public:
                                                  &flowerTypes, dio);
         commands[4] = new DownloadResultsCommand(&k, classifiedTrainData, unclassifiedTestData, &distanceMetric,
                                                  &flowerTypes, dio);
+        commands[5] = new ConfusionMatrixCommand(&k, classifiedTrainData, unclassifiedTestData, &distanceMetric,
+                                                 &flowerTypes, dio);
+//        commands[6] = new ExitCommand();
     }
 
     ~CLI() {

@@ -19,7 +19,12 @@ void ClassifyCommand::execute() {
 
     // CreateClassifiedFiles createClassifiedFiles(*k, unclassifiedTestData);
     // *flowerTypes = createClassifiedFiles.createClassified();
-    CreateClassifiedFiles createClassifiedFiles(*k, unclassifiedTestData);
+    if (!unclassifiedTestData || !classifiedTrainData) {
+        dio->write("[Print]:You have to enter the files first!\n");
+        dio->read();
+        return;
+    }
+    CreateClassifiedFiles createClassifiedFiles(*k, unclassifiedTestData, classifiedTrainData);
     *flowerTypes = createClassifiedFiles.createClassified();
     dio->write("[Print]:classifying data complete\n");
     dio->read();

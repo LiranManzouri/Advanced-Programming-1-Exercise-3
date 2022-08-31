@@ -16,8 +16,8 @@ using namespace std;
 // mutex m;
 
 string read(int sock) {
-    const int data_len = 4096;
-    char buffer[4096] = {0};
+    const int data_len = 8192;
+    char buffer[8192] = {0};
     // receives and checks that the connection is still fine and the info received successfully.
     long read_bytes = recv(sock, buffer, data_len, 0);
     if (read_bytes == 0) {
@@ -38,6 +38,21 @@ void write(int sock, const string& message) {
         cout << "Error sending to server in CLIENT" << endl;
         exit(1);
     }
+}
+
+string getRealTypes(const string& realTypesPath) {
+    ifstream realTypesInputFile;
+    realTypesInputFile.open(realTypesPath);
+    if (!realTypesInputFile.is_open()) {
+        return {};
+    }
+    string line;
+    string realTypes;
+    while (!realTypesInputFile.eof()) {
+        getline(realTypesInputFile, line);
+        realTypes.append(line + "\n");
+    }
+    return realTypes;
 }
 
 /*
@@ -110,7 +125,6 @@ int main(int argc, char const *argv[]) {
             path.append("/results.txt");
             //    cout << outputPath << endl;
             ofstream outputFile;
-            cout << "path: <" << path << ">" << endl;
             outputFile.open(path);
             while (!outputFile.is_open()) {
                 cout << "Wrong path! Try again:" << endl;

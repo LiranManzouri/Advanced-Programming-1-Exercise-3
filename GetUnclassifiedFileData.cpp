@@ -30,7 +30,13 @@ string GetUnclassifiedFileData::getData() {
         stringMessage.append(to_string(unclassifiedFlower.getCalyxLeavesLength()) + ","
                              + to_string(unclassifiedFlower.getCalyxLeavesWidth()) + ","
                              + to_string(unclassifiedFlower.getPetalLength()) + ","
-                             + to_string(unclassifiedFlower.getPetalWidth()) + "\n");
+                             + to_string(unclassifiedFlower.getPetalWidth()));
+
+        if (unclassifiedFlower.getFlowerType().empty()) {
+            stringMessage.append("\n");
+            continue;
+        }
+        stringMessage.append("," + unclassifiedFlower.getFlowerType() + "\n");
     }
     return stringMessage;
 }
