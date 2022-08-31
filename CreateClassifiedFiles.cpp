@@ -26,6 +26,7 @@ vector<string> CreateClassifiedFiles::createClassified() const {
 
     classifiedFlowers = classifiedReader.getFlowers();*/
 
+    // cout << "wow:\n" << classifiedFlowers << endl;
     int numOfClassifiedFlowers = 0;
     string currentData = classifiedFlowers;
     while (!currentData.empty()) {
@@ -38,8 +39,9 @@ vector<string> CreateClassifiedFiles::createClassified() const {
     Flower classified[numOfClassifiedFlowers];
     int i = 0;
     currentData = classifiedFlowers;
+    string line;
     while (!currentData.empty()) {
-        string line = currentData.substr(0, classifiedFlowers.find('\n'));
+        line = currentData.substr(0, currentData.find('\n'));
         currentData.erase(0, currentData.find('\n') + 1);
         if (line.empty()) {
             break;
@@ -53,7 +55,7 @@ vector<string> CreateClassifiedFiles::createClassified() const {
     /*int */i = 0;
     //writes the classified info to the array.
     while (!info.empty()) {
-        string line = info.substr(0, info.find('\n'));
+        line = info.substr(0, info.find('\n'));
         info.erase(0, info.find('\n') + 1);
         if (line.empty()) {
             break;
