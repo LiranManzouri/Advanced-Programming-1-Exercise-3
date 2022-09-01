@@ -90,32 +90,24 @@ int main(int argc, char const *argv[]) {
     }
     while (true) {
         string messageFromServer = read(sock);
-        if (messageFromServer == "[close]") {
-            // write(sock, "close");
+        if (messageFromServer == "[Exit]") {
             break;
         }
         string messageToServer;
-        // cout << endl << endl << "message from server = {" << messageFromServer << "}" << endl << endl;
-        // cout << "message: <" << messageFromServer << ">";
         if (messageFromServer.rfind("[File]:", 0) == 0) {
             cout << messageFromServer.erase(0, 7);
             string path;
             getline(cin, path);
-            // cout << path << endl;
             GetUnclassifiedFileData getFileData(path);
             messageToServer = getFileData.getData();
             write(sock, messageToServer);
-            // cout << messageToServer << endl;
         } else if (messageFromServer.rfind("[Print]:", 0) == 0) {
             cout << messageFromServer.erase(0, 8);
             write(sock, "Done");
-            // cout << messageFromServer;
         } else if (messageFromServer.rfind("[Create File]:", 0) == 0) {
             cout << messageFromServer.erase(0, 14);
-
             string path;
             getline(cin, path);
-
             if (path[0] == '\"') {
                 path.erase(0, 1);
             }
@@ -123,7 +115,6 @@ int main(int argc, char const *argv[]) {
                 path.pop_back();
             }
             path.append("/results.txt");
-            //    cout << outputPath << endl;
             ofstream outputFile;
             outputFile.open(path);
             while (!outputFile.is_open()) {
@@ -148,10 +139,8 @@ int main(int argc, char const *argv[]) {
             if(messageToServer.empty()) {
                 messageToServer = "[Enter]";
             }
-            // cout << "is enter got? {" << messageToServer << "}" << endl;
             write(sock, messageToServer);
         }
-        // messageToServer.append("\0");
     }
 
 

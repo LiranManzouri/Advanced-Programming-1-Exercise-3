@@ -2,24 +2,16 @@
 // Created by liran on 25/08/2022.
 //
 
+#include <iostream>
 #include "../CreateClassifiedFiles.h"
 #include "../GetUnclassifiedFileData.h"
 #include "ClassifyCommand.h"
-#include <iostream>
-#include <cstring>
 
 using namespace std;
 
 void ClassifyCommand::execute() {
-    // GetUnclassifiedFileData getTrainFileData("TrainFile.csv");
-    // strcpy(classifiedTrainData, getTrainFileData.getData().c_str());
-
-    // GetUnclassifiedFileData getTestFileData("TestFile.csv");
-    // strcpy(unclassifiedTestData, getTrainFileData.getData().c_str());
-
-    // CreateClassifiedFiles createClassifiedFiles(*k, unclassifiedTestData);
-    // *flowerTypes = createClassifiedFiles.createClassified();
-    if (!unclassifiedTestData || !classifiedTrainData) {
+    if (unclassifiedTestData == nullptr || classifiedTrainData == nullptr ||
+        unclassifiedTestData[0] == '\0' || classifiedTrainData[0] == '\0') {
         dio->write("[Print]:You have to enter the files first!\n");
         dio->read();
         return;

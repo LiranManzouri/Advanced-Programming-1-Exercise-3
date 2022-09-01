@@ -32,6 +32,8 @@ add_executable(Advanced_Programming_1___Exercise_3 Client/Client.cpp
         Command/DownloadResultsCommand.h
         Command/ConfusionMatrixCommand.cpp
         Command/ConfusionMatrixCommand.h
+        Command/ExitCommand.cpp
+        Command/ExitCommand.h
         IO/DefaultIO.cpp
         IO/DefaultIO.h
         IO/SocketIO.cpp

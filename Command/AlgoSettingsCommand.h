@@ -11,7 +11,7 @@
 class AlgoSettingsCommand : public Command {
 
 public:
-    AlgoSettingsCommand(int *k, char classifiedTrainData[4096], char unclassifiedTestData[4096],
+    AlgoSettingsCommand(int *k, char classifiedTrainData[8192], char unclassifiedTestData[8192],
                         std::string *distanceMetric, std::vector<std::string> *flowerTypes, DefaultIO *dio)
             : Command("algorithm settings", k, classifiedTrainData, unclassifiedTestData,
                       distanceMetric, flowerTypes, dio) {}

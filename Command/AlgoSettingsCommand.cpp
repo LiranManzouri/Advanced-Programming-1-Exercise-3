@@ -14,7 +14,6 @@ void AlgoSettingsCommand::execute() {
     dio->write(algoSettings);
     string userInput = dio->read();
     if (userInput == "[Enter]") {
-        cout << "got!" << endl;
         return;
     } else {
         bool failed;

@@ -5,12 +5,17 @@
 #include "../CreateClassifiedFiles.h"
 #include "ConfusionMatrixCommand.h"
 
-#include <iostream>
 #include <cmath>
 
 using namespace std;
 
 void ConfusionMatrixCommand::execute() {
+
+    if (classifiedTrainData == nullptr || classifiedTrainData[0] == '\0') {
+        dio->write("[Print]:You have to enter the classified (train) file first!\n");
+        dio->read();
+        return;
+    }
 
     CreateClassifiedFiles createClassifiedFiles(*k, classifiedTrainData, classifiedTrainData);
     vector<string> classifiedTypes = createClassifiedFiles.createClassified();
@@ -18,7 +23,6 @@ void ConfusionMatrixCommand::execute() {
     string types = classifiedTrainData;
     vector<string> realTypes;
 
-    // cout << types << endl;
     string line;
     char delim = ',';
     while (!types.empty()) {
@@ -29,10 +33,6 @@ void ConfusionMatrixCommand::execute() {
         realTypes.push_back(line);
         types.erase(0, types.find('\n') + 1);
     }
-
-    // for (auto &type : realTypes) {
-    //     cout << type << endl;
-    // }
 
     double matrix[3][3] = {0};
 
@@ -58,25 +58,32 @@ void ConfusionMatrixCommand::execute() {
         }
     }
 
-    double percentsMatrix[3][3] = {0};
+    int percentsMatrix[3][3] = {0};
     for (int j = 0; j < 3; j++) {
         double total = matrix[j][0] + matrix[j][1] + matrix[j][2];
         for (int l = 0; l < 3; l++) {
-            percentsMatrix[j][l] = round((matrix[j][l] / total) * 100);
+            percentsMatrix[j][l] = (int) (round((matrix[j][l] / total) * 100));
         }
     }
 
+    string percentsString;
     string typesArray[3] = {"Iris-setosa", "Iris-versicolor", "Iris-virginica"};
+    percentsString.append('\t' + typesArray[0] + '\t' + typesArray[1] + '\t' + typesArray[2] + "\n");
     for (int j = 0; j < 3; j++) {
-        cout << typesArray[j] << '\t';
+        percentsString.append(typesArray[j] + '\t');
         for (int l = 0; l < 3; l++) {
-            cout << percentsMatrix[j][l] << "%" << '\t';
+            percentsString.append(to_string(percentsMatrix[j][l]) + "%" + '\t');
         }
-        cout << endl;
+        percentsString.append("\n");
     }
-    cout << '\t' << typesArray[0] << '\t' << typesArray[1] + '\t' << typesArray[2] << endl;
-
-
+    percentsString.append("The current KNN parameters are: K = " + to_string(*k) +
+                          ", distance metric = " + (*distanceMetric) + "\n");
+    dio->write(percentsString);
+    string userInput = dio->read();
+    while (userInput != "[Enter]") {
+        dio->write("[Waiting for enter]");
+        userInput = dio->read();
+    }
     /*                0             1               2
      *              setosa      versicolor      virginica
      *0 setosa        100%           0%             0%
