@@ -8,20 +8,19 @@
 
 #include "DefaultIO.h"
 
+// Reading and writing using sockets.
 class SocketIO : public DefaultIO {
+    // The client sock which the socketIO will send to and read from.
     const int clientSock;
 public:
+    // Constructor.
     explicit SocketIO(int clientSock) : clientSock(clientSock) {}
 
+    // Reading method.
     std::string read() override;
 
+    // Writing method.
     void write(std::string message) override;
-
-    // func1: sendFromClientToServer(...);
-    // func2: receiveInClientFromServer(...);
-    // func3: sendFromServerToClient(...);
-    // func4: receiveInServerFromClient(...);
-
 };
 
 

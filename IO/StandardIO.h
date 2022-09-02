@@ -8,10 +8,14 @@
 
 #include "DefaultIO.h"
 
+// Reading and writing using cout and cin.
 class StandardIO : public DefaultIO {
 
 public:
+    // Reading method.
     std::string read() override;
+
+    // Writing method.
     void write(std::string message) override;
 };
 

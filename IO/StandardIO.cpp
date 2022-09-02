@@ -2,9 +2,9 @@
 // Created by liran on 25/08/2022.
 //
 
-#include <iostream>
-
 #include "StandardIO.h"
+
+#include <iostream>
 
 using namespace std;
 
@@ -13,7 +13,6 @@ void StandardIO::write(std::string message) {
 }
 
 std::string StandardIO::read() {
-//    cin.ignore();
     string input;
     getline(cin, input);
     return input;

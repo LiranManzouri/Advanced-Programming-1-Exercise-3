@@ -8,6 +8,7 @@
 
 #include <string>
 
+// Abstract class which capable of writing and reading.
 class DefaultIO {
 public:
     virtual void write(std::string message) = 0;

@@ -16,28 +16,10 @@ std::string SocketIO::read() {
     char buffer[8192] = {0};
     // receives and checks that the connection is still fine and the info received successfully.
     long read_bytes = recv(clientSock, &buffer, data_len, 0);
-    /*if (read_bytes == 0) {
-        cout << "Closed connection in SERVER" << endl;
-    } else */if (read_bytes < 0) {
+    if (read_bytes < 0) {
         cerr << "Error reading in SERVER" << endl;
         exit(1);
-    }/* else {
-        while (buffer != '\0') {
-            cout << "buf = " << buffer;
-            message.push_back(buffer);
-            read_bytes = recv(clientSock, &buffer, sizeof(char), 0);
-            if (read_bytes == 0) {
-                cout << "==> Closed connection with the client! " << endl;
-            } else if (read_bytes < 0) {
-                cerr << "Error reading in SERVER" << endl;
-                exit(1);
-            } else {
-                continue;
-            }
-        }
     }
-    */
-
     // Returns the received message.
     return buffer;
 }
