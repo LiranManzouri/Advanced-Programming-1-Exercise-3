@@ -3,6 +3,7 @@
 //
 
 #include "CLI.h"
+#include "Converts/StringTo.h"
 
 using namespace std;
 
@@ -12,8 +13,8 @@ void CLI::start() {
     // Gets the wished command.
     string clientInput;
     clientInput = dio->read();
-    while (!isStringANumber(clientInput) ||
-           (isStringANumber(clientInput) && (stoi(clientInput) > 7 || stoi(clientInput) < 1))) {
+    while (!StringTo::Int(clientInput) ||
+           (StringTo::Int(clientInput) && (stoi(clientInput) > 7 || stoi(clientInput) < 1))) {
         dio->write("The input for the menu should be a natural number between 1 and 7!\n");
         clientInput = dio->read();
     }
@@ -23,8 +24,8 @@ void CLI::start() {
         commands[choose - 1]->execute();
         printMenu();
         clientInput = dio->read();
-        while (!isStringANumber(clientInput) ||
-               (isStringANumber(clientInput) && (stoi(clientInput) > 7 || stoi(clientInput) < 1))) {
+        while (!StringTo::Int(clientInput) ||
+               (StringTo::Int(clientInput) && (stoi(clientInput) > 7 || stoi(clientInput) < 1))) {
             dio->write("The input for the menu should be a natural number between 1 and 7!\n");
             clientInput = dio->read();
         }
@@ -41,16 +42,4 @@ void CLI::printMenu() {
         message.append(to_string(i++) + ". " + command->getDescription() + "\n");
     }
     dio->write(message);
-}
-
-// Checks if a string is a number.
-bool CLI::isStringANumber(const string &str) {
-    bool isANumber = true;
-    for (auto &ch: str) {
-        if (!isdigit(ch)) {
-            isANumber = false;
-            break;
-        }
-    }
-    return isANumber;
 }

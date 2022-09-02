@@ -11,27 +11,25 @@ string Flower::getFlowerType() const {
     return m_flowerType;
 }
 
-double Flower::getPetalLength() const {
-    return m_petalLength;
+unsigned long Flower::numOfAttributes() const {
+    return m_flowerAttributes.size();
 }
 
-double Flower::getPetalWidth() const {
-    return m_petalWidth;
-}
-
-double Flower::getCalyxLeavesLength() const {
-    return m_calyxLeavesLength;
-}
-
-double Flower::getCalyxLeavesWidth() const {
-    return m_calyxLeavesWidth;
+double Flower::getAttribute(unsigned long i) const {
+    return m_flowerAttributes.at(i);
 }
 
 ostream &operator<<(ostream &os, const Flower &flower) {
     if (flower.getFlowerType().empty()) {
-        return os << flower.getCalyxLeavesLength() << " " << flower.getCalyxLeavesWidth()
-                  << " " << flower.getPetalLength() << " " << flower.getPetalWidth();
+        for (int i = 0; i < flower.numOfAttributes() - 1; i++) {
+            os << flower.getAttribute(i) << " ";
+        }
+        os << flower.getAttribute(flower.numOfAttributes() - 1);
+    } else {
+        os << flower.getFlowerType();
+        for (int i = 0; i < flower.numOfAttributes() - 1; i++) {
+            os << "" << flower.getAttribute(i);
+        }
     }
-    return os << flower.getFlowerType() << " " << flower.getCalyxLeavesLength() << " "
-              << flower.getCalyxLeavesWidth() << " " << flower.getPetalLength() << " " << flower.getPetalWidth();
+    return os;
 }

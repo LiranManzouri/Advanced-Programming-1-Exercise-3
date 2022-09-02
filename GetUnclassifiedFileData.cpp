@@ -27,10 +27,10 @@ string GetUnclassifiedFileData::getData() {
     //writes the classified info to the array.
     for (int j = 0; j < numOfUnclassifiedFlowers; j++) {
         const Flower unclassifiedFlower = unclassifiedFlowers[j];
-        stringMessage.append(to_string(unclassifiedFlower.getCalyxLeavesLength()) + ","
-                             + to_string(unclassifiedFlower.getCalyxLeavesWidth()) + ","
-                             + to_string(unclassifiedFlower.getPetalLength()) + ","
-                             + to_string(unclassifiedFlower.getPetalWidth()));
+        stringMessage.append(to_string(unclassifiedFlower.getAttribute(0)));
+        for (int i = 1; i < unclassifiedFlower.numOfAttributes(); i++) {
+            stringMessage.append("," + to_string(unclassifiedFlower.getAttribute(i)));
+        }
 
         if (unclassifiedFlower.getFlowerType().empty()) {
             stringMessage.append("\n");

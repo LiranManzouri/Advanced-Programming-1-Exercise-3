@@ -12,7 +12,7 @@ class ClassifyCommand : public Command {
 
 public:
     // Constructor.
-    ClassifyCommand(int *k, char classifiedTrainData[8192], char unclassifiedTestData[8192],
+    ClassifyCommand(int *k, char classifiedTrainData[16384], char unclassifiedTestData[16384],
                     std::string *distanceMetric, std::vector<std::string> *flowerTypes, DefaultIO *dio) : Command(
             "classify data", k, classifiedTrainData, unclassifiedTestData, distanceMetric, flowerTypes, dio) {}
     // Executes the command.

@@ -30,6 +30,8 @@ add_executable(Advanced_Programming_1___Exercise_3 Client/Client.cpp
         Command/ConfusionMatrixCommand.h
         Command/ExitCommand.cpp
         Command/ExitCommand.h
+        Converts/StringTo.cpp
+        Converts/StringTo.h
         IO/DefaultIO.cpp
         IO/DefaultIO.h
         IO/SocketIO.cpp

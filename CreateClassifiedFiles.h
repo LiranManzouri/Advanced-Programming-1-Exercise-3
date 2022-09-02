@@ -11,15 +11,17 @@
 
 class CreateClassifiedFiles {
 
-    const int k;
-    const std::string flowersInfoToClassify;
-    const std::string classifiedFlowers;
+    const int m_k;
+    const std::string m_distanceMetric;
+    const std::string m_flowersInfoToClassify;
+    const std::string m_classifiedFlowers;
 
 public:
 
-    CreateClassifiedFiles(int k, std::string flowersInfoToClassify, std::string classifiedFlowers)
-            : k(k), flowersInfoToClassify(std::move(flowersInfoToClassify)),
-              classifiedFlowers(std::move(classifiedFlowers)) {}
+    CreateClassifiedFiles(int k, std::string distanceMetric, std::string flowersInfoToClassify,
+                          std::string classifiedFlowers)
+            : m_k(k), m_distanceMetric(std::move(distanceMetric)), m_flowersInfoToClassify(std::move(flowersInfoToClassify)),
+              m_classifiedFlowers(std::move(classifiedFlowers)) {}
 
     // creates the output files for the classifier to write in
     // and write the classified info to the files

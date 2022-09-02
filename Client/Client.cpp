@@ -12,8 +12,8 @@ using namespace std;
 
 // Read the message from the server.
 string read(int sock) {
-    const int data_len = 8192;
-    char buffer[8192] = {0};
+    const int data_len = 16384;
+    char buffer[16384] = {0};
     // receives and checks that the connection is still fine and the info received successfully.
     long read_bytes = recv(sock, buffer, data_len, 0);
     if (read_bytes == 0) {

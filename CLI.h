@@ -21,12 +21,11 @@ class CLI {
     DefaultIO *dio;
     Command *commands[7]{};
     int k = 5;
-    char classifiedTrainData[8192] = {0};
-    char unclassifiedTestData[8192] = {0};
+    char classifiedTrainData[16384] = {0};
+    char unclassifiedTestData[16384] = {0};
     std::string distanceMetric = "EUC";
     std::vector<std::string> flowerTypes;
     void printMenu();
-    static bool isStringANumber(const std::string& str);
 
 public:
 //    int getNewClient() const;

@@ -12,7 +12,7 @@ class ConfusionMatrixCommand : public Command {
 
 public:
     // Constructor.
-    ConfusionMatrixCommand(int *k, char classifiedTrainData[8192], char unclassifiedTestData[8192],
+    ConfusionMatrixCommand(int *k, char classifiedTrainData[16384], char unclassifiedTestData[16384],
                            std::string *distanceMetric, std::vector<std::string> *flowerTypes, DefaultIO *dio)
             : Command("display algorithm confusion matrix", k, classifiedTrainData, unclassifiedTestData,
                       distanceMetric, flowerTypes, dio) {}

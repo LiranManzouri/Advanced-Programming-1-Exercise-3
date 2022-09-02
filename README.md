@@ -30,5 +30,5 @@ another client, press "1" in that menu, and then run only the Client again (same
 # Implementation
 
 In this project, there are server and client. The client sends a path to unclassified flowers to the server, which
-classify them by the knn algorithm we've implemented in exercise 1, with k = 7. After classifying, the server sends the
+classify them by the knn algorithm we've implemented in exercise 1, with m_k = 7. After classifying, the server sends the
 classifiers to the client, which writes them to an output file he has got.

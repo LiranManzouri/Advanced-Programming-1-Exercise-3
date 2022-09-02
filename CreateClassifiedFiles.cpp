@@ -15,20 +15,8 @@ using namespace std;
  * classifies the unclassified flowers by the three methods, and writes the results to the files
  */
 vector<string> CreateClassifiedFiles::createClassified() const {
-    //reads the flowers
-    /*ReadFlowers classifiedReader = ReadFlowers("classified.csv");
-    classifiedReader.readAndSaveFlowers();
-
-    int numOfClassifiedFlowers = classifiedReader.getNumOfFlowers();
-    if (numOfClassifiedFlowers == -1) {
-        return {};
-    }
-
-    classifiedFlowers = classifiedReader.getFlowers();*/
-
-    // cout << "wow:\n" << classifiedFlowers << endl;
     int numOfClassifiedFlowers = 0;
-    string currentData = classifiedFlowers;
+    string currentData = m_classifiedFlowers;
     while (!currentData.empty()) {
         currentData.erase(0, currentData.find('\n') + 1);
         numOfClassifiedFlowers++;
@@ -38,7 +26,7 @@ vector<string> CreateClassifiedFiles::createClassified() const {
 
     Flower classified[numOfClassifiedFlowers];
     int i = 0;
-    currentData = classifiedFlowers;
+    currentData = m_classifiedFlowers;
     string line;
     while (!currentData.empty()) {
         line = currentData.substr(0, currentData.find('\n'));
@@ -51,7 +39,7 @@ vector<string> CreateClassifiedFiles::createClassified() const {
         classified[i] = flower;
         i++;
     }
-    string info = flowersInfoToClassify;
+    string info = m_flowersInfoToClassify;
     /*int */i = 0;
     //writes the classified info to the array.
     while (!info.empty()) {
@@ -62,8 +50,14 @@ vector<string> CreateClassifiedFiles::createClassified() const {
         }
         CreateFlowerByLine createFlowerByLine(line);
         const Flower unclassifiedFlower = createFlowerByLine.getFlower();
-        ClassifyFlower classifyFlower(unclassifiedFlower, classified, numOfClassifiedFlowers, k);
-        flowerTypesByOrder.push_back(classifyFlower.euclideanClassify());
+        ClassifyFlower classifyFlower(unclassifiedFlower, classified, numOfClassifiedFlowers, m_k);
+        if (m_distanceMetric == "MAN") {
+            flowerTypesByOrder.push_back(classifyFlower.manhattanClassify());
+        } else if (m_distanceMetric == "EUC") {
+            flowerTypesByOrder.push_back(classifyFlower.euclideanClassify());
+        } else if (m_distanceMetric == "CHE") {
+            flowerTypesByOrder.push_back(classifyFlower.chebyshevClassify());
+        }
         i++;
     }
     return flowerTypesByOrder;

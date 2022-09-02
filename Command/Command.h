@@ -29,7 +29,7 @@ public:
         return description;
     }
     // Constructor.
-    Command(std::string description, int *k, char classifiedTrainData[8192], char unclassifiedTestData[8192],
+    Command(std::string description, int *k, char classifiedTrainData[16384], char unclassifiedTestData[16384],
             std::string *distanceMetric, std::vector<std::string> *flowerTypes, DefaultIO *dio)
             : description(std::move(description)), k(k), distanceMetric(distanceMetric), dio(dio) {
         this->classifiedTrainData = classifiedTrainData;

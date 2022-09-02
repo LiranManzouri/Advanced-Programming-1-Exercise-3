@@ -20,7 +20,7 @@ void ConfusionMatrixCommand::execute() {
     }
 
     // Classifying the train data.
-    CreateClassifiedFiles createClassifiedFiles(*k, classifiedTrainData, classifiedTrainData);
+    CreateClassifiedFiles createClassifiedFiles(*k, *distanceMetric, classifiedTrainData, classifiedTrainData);
     vector<string> classifiedTypes = createClassifiedFiles.createClassified();
 
     //

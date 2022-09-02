@@ -7,22 +7,19 @@
 
 
 #include <string>
+#include <utility>
+#include <vector>
 
 class Flower {
     std::string m_flowerType;
-    double m_calyxLeavesLength;
-    double m_calyxLeavesWidth;
-    double m_petalLength;
-    double m_petalWidth;
+    std::vector<double> m_flowerAttributes;
 public:
 
     // constructor for the flower class
-    Flower(std::string flowerType, double calyxLeavesLength, double calyxLeavesWidth, double petalLength,
-           double petalWidth) : m_calyxLeavesLength(calyxLeavesLength), m_calyxLeavesWidth(calyxLeavesWidth),
-                                m_petalLength(petalLength), m_petalWidth(petalWidth), m_flowerType(move(flowerType)) {}
+    Flower(std::string flowerType, std::vector<double> flowerAttributes)
+            : m_flowerAttributes(std::move(flowerAttributes)), m_flowerType(move(flowerType)) {}
 
-    Flower() : m_calyxLeavesLength(0), m_calyxLeavesWidth(0),
-               m_petalLength(0), m_petalWidth(0) {}
+    Flower() = default;
 
     Flower(const Flower &flower) = default;
 
@@ -31,27 +28,20 @@ public:
     //getters
     std::string getFlowerType() const;
 
-    double getCalyxLeavesLength() const;
+    double getAttribute(unsigned long i) const;
 
-    double getCalyxLeavesWidth() const;
-
-    double getPetalLength() const;
-
-    double getPetalWidth() const;
+    unsigned long numOfAttributes() const;
 
     Flower &operator=(const Flower &flower) {
         if (this == &flower) {
             return *this;
         }
         m_flowerType = flower.m_flowerType;
-        m_calyxLeavesLength = flower.m_calyxLeavesLength;
-        m_calyxLeavesWidth = flower.m_calyxLeavesWidth;
-        m_petalLength = flower.m_petalLength;
-        m_petalWidth = flower.m_petalWidth;
+        m_flowerAttributes = flower.m_flowerAttributes;
         return *this;
     }
 };
 
 std::ostream &operator<<(std::ostream &os, const Flower &flower);
 
-#endif //ADVANCED_PROGRAMMING_1___EXERCISE_2_FLOWER_H
+#endif //ADVANCED_PROGRAMMING_1___EXERCISE_3_FLOWER_H

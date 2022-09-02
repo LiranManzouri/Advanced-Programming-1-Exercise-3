@@ -3,30 +3,39 @@
 //
 
 #include "CreateFlowerByLine.h"
+#include "Converts/StringTo.h"
+
 #include <string>
 
 using namespace std;
 
 Flower CreateFlowerByLine::getFlower() {
     const char delim = ',';
-    string token1 = line.substr(0, line.find(delim));
-    line.erase(0, line.find(delim) + 1);
-    string token2 = line.substr(0, line.find(delim));
-    line.erase(0, line.find(delim) + 1);
-    string token3 = line.substr(0, line.find(delim));
-    line.erase(0, line.find(delim) + 1);
-    string token4 = line.substr(0, line.find(delim));
-    string flowerType;
-    if (line.find(delim) != string::npos) {
+    vector<string> stringAttributes;
+    while (line.find(delim) != string::npos) {
+        string attribute = line.substr(0, line.find(delim));
         line.erase(0, line.find(delim) + 1);
-        flowerType = line.substr(0, line.find('\r'));
-        flowerType.append("\0");
-        line.erase();
+        stringAttributes.push_back(attribute);
     }
-    double calyxLeavesLength = stod(token1);
-    double calyxLeavesWidth = stod(token2);
-    double petalLength = stod(token3);
-    double petalWidth = stod(token4);
-    Flower flower = Flower(flowerType, calyxLeavesLength, calyxLeavesWidth, petalLength, petalWidth);
+    string lastAttribute = line.substr(0, line.find('\r'));
+    lastAttribute.append("\0");
+    line.erase();
+
+    stringAttributes.push_back(lastAttribute);
+
+    vector<double> doubleAttributes;
+    doubleAttributes.reserve(stringAttributes.size() - 1);
+    for (int i = 0; i < stringAttributes.size() - 1; ++i) {
+        doubleAttributes.push_back(stod(stringAttributes.at(i)));
+    }
+
+    string flowerType;
+    if (StringTo::Double(lastAttribute)) {
+        doubleAttributes.push_back(stod(lastAttribute));
+    } else {
+        flowerType = lastAttribute;
+    }
+
+    Flower flower = Flower(flowerType, doubleAttributes);
     return flower;
 }

@@ -11,7 +11,7 @@
 class ExitCommand : public Command {
 public:
     // Constructor.
-    ExitCommand(int *k, char classifiedTrainData[8192], char unclassifiedTestData[8192],
+    ExitCommand(int *k, char classifiedTrainData[16384], char unclassifiedTestData[16384],
                            std::string *distanceMetric, std::vector<std::string> *flowerTypes, DefaultIO *dio)
             : Command("exit", k, classifiedTrainData, unclassifiedTestData, distanceMetric,
                       flowerTypes, dio) {}

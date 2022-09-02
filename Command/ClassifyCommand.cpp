@@ -18,7 +18,7 @@ void ClassifyCommand::execute() {
         return;
     }
     // Classifying the unclassified flowers.
-    CreateClassifiedFiles createClassifiedFiles(*k, unclassifiedTestData, classifiedTrainData);
+    CreateClassifiedFiles createClassifiedFiles(*k, *distanceMetric, unclassifiedTestData, classifiedTrainData);
     *flowerTypes = createClassifiedFiles.createClassified();
     dio->write("[Print]:classifying data complete\n");
     dio->read();
