@@ -4,33 +4,27 @@
 
 #include "UploadCommand.h"
 #include "../GetUnclassifiedFileData.h"
-#include <iostream>
-#include <fstream>
+
 #include <cstring>
-#include <mutex>
 
 using namespace std;
 
+// Class for the first command which gets the files from the user and saves them.
 void UploadCommand::execute() {
-//    dio->write("[File]");
+    // Asks for the file.
     dio->write("[File]:Please upload your local train CSV file.\n");
-
+    // Gets the data.
     string fileData = dio->read();
-//    GetUnclassifiedFileData getTrainFileData(dio, path);
-//    strcpy(classifiedTrainData, getTrainFileData.getData().c_str());
+    // Saves the data.
     strcpy(classifiedTrainData, fileData.c_str());
 
-    // dio->write("Upload complete.\n");
-
-//    dio->write("[File]");
+    // Asks for the file.
     dio->write("[File]:Upload complete.\nPlease upload your local test CSV file.\n");
 
     fileData = dio->read();
-
-//    GetUnclassifiedFileData getTestFileData(dio, path);
-//    strcpy(unclassifiedTestData, getTestFileData.getData().c_str());
+    // Gets the data.
     strcpy(unclassifiedTestData, fileData.c_str());
-
+    // Saves the data.
     dio->write("[Print]:Upload complete.\n");
 
     dio->read();

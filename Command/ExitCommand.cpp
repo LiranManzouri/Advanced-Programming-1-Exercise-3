@@ -4,6 +4,7 @@
 
 #include "ExitCommand.h"
 
+// Class for the seventh command which exits the program.
 void ExitCommand::execute() {
     dio->write("[Exit]");
 }

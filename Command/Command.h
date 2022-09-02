@@ -13,20 +13,22 @@
 
 class Command {
 protected:
+    // DefaultIO for reading and writing.
     DefaultIO *dio;
     const std::string description;
     int *k;
     char *classifiedTrainData;
     char *unclassifiedTestData;
-    std::string *distanceMetric/* = new std::string("EUC")*/;
+    std::string *distanceMetric;
     std::vector<std::string> *flowerTypes;
 public:
+    // Executes command.
     virtual void execute() = 0;
-
+    // Getter for the description.
     std::string getDescription() const {
         return description;
     }
-
+    // Constructor.
     Command(std::string description, int *k, char classifiedTrainData[8192], char unclassifiedTestData[8192],
             std::string *distanceMetric, std::vector<std::string> *flowerTypes, DefaultIO *dio)
             : description(std::move(description)), k(k), distanceMetric(distanceMetric), dio(dio) {
@@ -34,7 +36,7 @@ public:
         this->unclassifiedTestData = unclassifiedTestData;
         this->flowerTypes = flowerTypes;
     }
-
+    // Destructor.
     virtual ~Command() = default;
 
 };

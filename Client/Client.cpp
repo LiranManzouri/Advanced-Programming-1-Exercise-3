@@ -1,20 +1,16 @@
-#include "ClientFront.h"
 #include "../ReadFlowers.h"
 #include "../ClassifyFlower.h"
+#include "../GetUnclassifiedFileData.h"
+
 #include <iostream>
 #include <cstring>
 #include <fstream>
-#include "../GetUnclassifiedFileData.h"
 #include <sys/socket.h>
 #include <netinet/in.h>
-#include <thread>
-#include <mutex>
-#include <unistd.h>
-#include <csignal>
 
 using namespace std;
-// mutex m;
 
+// Read the message from the server.
 string read(int sock) {
     const int data_len = 8192;
     char buffer[8192] = {0};
@@ -28,10 +24,8 @@ string read(int sock) {
     }
     return buffer;
 }
-
+// Write a message to the server.
 void write(int sock, const string& message) {
-    // cout << "message is = <" << message << ">" << endl;
-    // getline(cin, message);
     // Sends and checks that it sent successfully.
     long sent_bytes = send(sock, message.c_str(), message.length(), 0);
     if (sent_bytes < 0) {
@@ -40,25 +34,8 @@ void write(int sock, const string& message) {
     }
 }
 
-string getRealTypes(const string& realTypesPath) {
-    ifstream realTypesInputFile;
-    realTypesInputFile.open(realTypesPath);
-    if (!realTypesInputFile.is_open()) {
-        return {};
-    }
-    string line;
-    string realTypes;
-    while (!realTypesInputFile.eof()) {
-        getline(realTypesInputFile, line);
-        realTypes.append(line + "\n");
-    }
-    return realTypes;
-}
-
 /*
  * Main for the client, to communicate with the server.
- * The client sends a path to unclassified flowers to the server and get their classify,
- * after that, the client writes the classifiers to the output file.
  */
 int main(int argc, char const *argv[]) {
     const int port_no = 5555;
@@ -68,16 +45,6 @@ int main(int argc, char const *argv[]) {
         cout << "Error creating socket in CLIENT" << endl;
         exit(1);
     }
-    // Initializes the info about the socket.
-    // alarm(8);
-    // struct sigaction sa{};
-    // sa.sa_handler = alarmHandler;
-    // sigemptyset(&sa.sa_mask);
-    // if (sigaction(SIGALRM, &sa, nullptr) == -1) {
-    //     cout << "WOW" << endl;
-    //     return 0;
-    // }
-    // alarm(0);
     struct sockaddr_in sin{};
     memset(&sin, 0, sizeof(sin));
     sin.sin_family = AF_INET;
@@ -88,23 +55,34 @@ int main(int argc, char const *argv[]) {
         cout << "Error connecting to server!" << endl;
         exit(1);
     }
+    // Non-stop communication, until the client select the exit command.
     while (true) {
+        // Read the message from the server.
         string messageFromServer = read(sock);
+        // Exit command - breaks.
         if (messageFromServer == "[Exit]") {
             break;
         }
         string messageToServer;
+        // Reading a file - command 1.
         if (messageFromServer.rfind("[File]:", 0) == 0) {
+            // Prints the message from the server.
             cout << messageFromServer.erase(0, 7);
+            // Gets the path.
             string path;
             getline(cin, path);
+            // Gets the data from the file in the given path.
             GetUnclassifiedFileData getFileData(path);
             messageToServer = getFileData.getData();
+            // Sends the data to the server.
             write(sock, messageToServer);
+            // If the server only wants to send something to print in the client side without getting something back.
         } else if (messageFromServer.rfind("[Print]:", 0) == 0) {
             cout << messageFromServer.erase(0, 8);
             write(sock, "Done");
+            // Creates new file to save the results - command 5.
         } else if (messageFromServer.rfind("[Create File]:", 0) == 0) {
+            // Gets the local path.
             cout << messageFromServer.erase(0, 14);
             string path;
             getline(cin, path);
@@ -117,6 +95,7 @@ int main(int argc, char const *argv[]) {
             path.append("/results.txt");
             ofstream outputFile;
             outputFile.open(path);
+            // Gets a path until it's a valid path.
             while (!outputFile.is_open()) {
                 cout << "Wrong path! Try again:" << endl;
                 getline(cin, path);
@@ -128,9 +107,11 @@ int main(int argc, char const *argv[]) {
                 }
             }
             write(sock, "Done");
+            // Prints the results in the file.
             messageFromServer = read(sock);
             outputFile << messageFromServer;
             write(sock, "Done");
+            // Prints and waits for input without something specific to do.
         } else {
             if (!(messageFromServer == "[Waiting for enter]")) {
                 cout << messageFromServer;

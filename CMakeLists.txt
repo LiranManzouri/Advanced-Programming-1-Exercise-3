@@ -12,12 +12,8 @@ include_directories(IO)
 
 add_executable(Advanced_Programming_1___Exercise_3 Client/Client.cpp
         Client/Client.h
-        Client/ClientFront.cpp
-        Client/ClientFront.h
         Server/Server.cpp
         Server/Server.h
-        Server/ServerFront.cpp
-        Server/ServerFront.h
         Command/Command.cpp
         Command/Command.h
         Command/AlgoSettingsCommand.cpp
@@ -40,12 +36,8 @@ add_executable(Advanced_Programming_1___Exercise_3 Client/Client.cpp
         IO/SocketIO.h
         IO/StandardIO.cpp
         IO/StandardIO.h
-        ClientHandler.cpp
-        ClientHandler.h
         CLI.cpp
         CLI.h
-        tempMain.cpp
-        tempMain.h
         GetUnclassifiedFileData.cpp
         GetUnclassifiedFileData.h
         ClassifyFlower.cpp

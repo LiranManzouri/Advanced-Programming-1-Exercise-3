@@ -1,7 +1,6 @@
-//#include "Server.h"
-#include "ServerFront.h"
 #include "../CLI.h"
 #include "../CreateClassifiedFiles.h"
+
 #include <iostream>
 #include <cstring>
 #include <thread>
@@ -12,6 +11,7 @@
 
 using namespace std;
 
+// The threads run this function.
 void clientHandler(int client_sock) {
     SocketIO socketIo(client_sock);
     CLI cli(&socketIo);
@@ -22,15 +22,9 @@ void clientHandler(int client_sock) {
 void alarmHandler(int signum) {
 }
 
-/*
- * Main for the server, to communicate with the clients.
- * The server gets a path to unclassified flowers from a client and
- * classify them, after that, the server sends it back to the client.
- */
-int main(int argc, char const *argv[]) {
-    // Responsible for the communication.
-//    ServerFront front;
 
+// Main for the server, to communicate with the clients.
+int main(int argc, char const *argv[]) {
     // Port to use.
     const int server_port = 5555;
     // Creates the socket and checks it created successfully.
@@ -52,6 +46,7 @@ int main(int argc, char const *argv[]) {
         exit(1);
     }
 
+    // Saves the threads.
     vector<thread> clientThreads;
 
     // Waits for a client.
@@ -59,23 +54,28 @@ int main(int argc, char const *argv[]) {
         cout << "Error listening to a socket in SERVER" << endl;
         exit(1);
     }
-    int i = 0;
 
-    // Runs until it being said to stop.
+    // Runs until timeout.
     while (true) {
+
+        // Timeout handler.
         struct sigaction sa{};
         sa.sa_handler = alarmHandler;
         sigemptyset(&sa.sa_mask);
         if (sigaction(SIGALRM, &sa, nullptr) == -1) {
             break;
         }
+
         // Accepts the client and checks it went successfully.
         struct sockaddr_in client_sin{};
         unsigned int addr_len = sizeof(client_sin);
+        // Waits 90 seconds until timeout.
         alarm(90);
         int client_sock = accept(sock, (struct sockaddr *) &client_sin, &addr_len);
         alarm(0);
+        // Error.
         if (client_sock < 0) {
+            // If the error was because of timeout.
             if (errno == EINTR) {
                 close(sock);
                 break;
@@ -83,17 +83,12 @@ int main(int argc, char const *argv[]) {
                 return 0;
             }
         }
-//        if (client_sock < 0) {
-//            cout << "Error accepting client in SERVER" << endl;
-//            // exit(1);
-//            break;
-//        }
+
+        // New thread for the client.
         thread newClientThread(clientHandler, client_sock);
         clientThreads.push_back(move(newClientThread));
-        i++;
-        // newClientThread.join();
-        // alarm(0);
     }
+    // Joins the threads after a timeout.
     for (auto &t: clientThreads) {
         t.join();
     }

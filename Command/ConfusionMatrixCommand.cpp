@@ -8,30 +8,35 @@
 #include <cmath>
 
 using namespace std;
-
+// Class for the sixth command which calculates a matrix that the element (i,j)
+// is the percents to classify organ from type i to type j, according to the train data.
 void ConfusionMatrixCommand::execute() {
 
+    // If the user hasn't entered the classified file.
     if (classifiedTrainData == nullptr || classifiedTrainData[0] == '\0') {
         dio->write("[Print]:You have to enter the classified (train) file first!\n");
         dio->read();
         return;
     }
 
+    // Classifying the train data.
     CreateClassifiedFiles createClassifiedFiles(*k, classifiedTrainData, classifiedTrainData);
     vector<string> classifiedTypes = createClassifiedFiles.createClassified();
 
-    string types = classifiedTrainData;
+    //
+    string trainData = classifiedTrainData;
     vector<string> realTypes;
 
     string line;
+    // Gets the real types.
     char delim = ',';
-    while (!types.empty()) {
-        line = types.substr(0, types.find('\n'));
+    while (!trainData.empty()) {
+        line = trainData.substr(0, trainData.find('\n'));
         while (line.find(delim) != string::npos) {
             line.erase(0, line.find(delim) + 1);
         }
         realTypes.push_back(line);
-        types.erase(0, types.find('\n') + 1);
+        trainData.erase(0, trainData.find('\n') + 1);
     }
 
     double matrix[3][3] = {0};
@@ -76,6 +81,8 @@ void ConfusionMatrixCommand::execute() {
         }
         percentsString.append("\n");
     }
+
+    // Sending the matrix and the knn parameters to the client.
     percentsString.append("The current KNN parameters are: K = " + to_string(*k) +
                           ", distance metric = " + (*distanceMetric) + "\n");
     dio->write(percentsString);

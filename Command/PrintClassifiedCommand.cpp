@@ -3,18 +3,21 @@
 //
 
 #include "PrintClassifiedCommand.h"
-#include <iostream>
+
 #include <string>
 
 using namespace std;
 
+// Class for the fourth command which prints the classifying data in the client.
 void PrintClassifiedCommand::execute() {
+    // If the user hasn't entered the files.
     if (flowerTypes->empty()) {
         dio->write("[Print]:You have to classify the data first!\n");
         dio->read();
         return;
     }
 
+    // Saves the data and sends to the client.
     string message;
     int i = 1;
     for (auto &flowerType: *flowerTypes) {
@@ -22,6 +25,8 @@ void PrintClassifiedCommand::execute() {
     }
     message.append("Done.\n");
     dio->write(message);
+
+    // Move on to the menu after the client enters the enter key.
     string userInput;
     userInput = dio->read();
     while (!(userInput == "[Enter]")) {
