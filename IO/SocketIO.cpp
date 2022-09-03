@@ -3,10 +3,9 @@
 //
 
 #include "SocketIO.h"
+
 #include <iostream>
 #include <netinet/in.h>
-#include <unistd.h>
-#include <mutex>
 
 using namespace std;
 

@@ -3,15 +3,11 @@
 using namespace std;
 
 
-/**
- * It takes an array of pairs of flowers and distances, and returns the index of the pivot element
- * Args:
- *   arr (pair<Flower *, double>): the array of pairs of flowers and their distances from the flower
- * Returns:
- *   The index of the pivot.
- */
-int KNN::partition(vector<pair<Flower *, double>>& arr, int left, int right, int pivot) {
-    //gets the pivot to the right place in O(N), using swaps
+// It takes a vector of pairs of pointers to flowers and their distance to the flower,
+// and returns the index of the pivot element. It also moves all smaller element to the left of
+// the pivot and greater elements to the right of the pivot.
+int KNN::partition(vector<pair<Flower *, double>> &arr, int left, int right, int pivot) {
+    // Gets the pivot to its right place using swaps.
     double x = arr.at(pivot).second;
     swap(arr.at(pivot), arr.at(right));
     int i = left;
@@ -25,29 +21,26 @@ int KNN::partition(vector<pair<Flower *, double>>& arr, int left, int right, int
     return i;
 }
 
-/**
- * It takes an array of pairs of flowers and distances, and sorts the array so that the first k
- * elements are the k smallest distances
- * 
- * Args:
- *   k (int): the kth smallest element we want to find
- *   arr (pair<Flower *, double>): the array of pairs of flowers and their distances
- * 
- * Returns:
- *   the index of the pivot after the partition.
- */
-void KNN::QuickSelect(int k, vector<pair<Flower *, double>>& arr, int left, int right) {
+
+// It takes a vector of pairs of pointers to flowers and distances, and sort it
+// such that the first k elements in the vector are the k smallest distances.
+
+void KNN::QuickSelect(int k, vector<pair<Flower *, double>> &arr, int left, int right) {
+    // If the vector contains only one element, return.
     if (left == right) {
         return;
     }
-    // takes the middle as the pivot and does the partition around it
+    // Takes the middle as the pivot and does the partition on it.
     int pivotIndex = left + (right - left) / 2;
     pivotIndex = partition(arr, left, right, pivotIndex);
+    // The pivot is in its right position.
     if (pivotIndex == k) {
         return;
     }
+    // Recursive quick select on the left side.
     if (k < pivotIndex) {
         return QuickSelect(k, arr, left, pivotIndex - 1);
     }
+    // Recursive quick select on the right side.
     return QuickSelect(k, arr, pivotIndex + 1, right);
 }

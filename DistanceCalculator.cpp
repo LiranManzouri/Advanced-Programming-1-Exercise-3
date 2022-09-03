@@ -2,24 +2,59 @@
 
 #include <cmath>
 
-double DistanceCalculator::euclidean(const Flower &f1, const Flower &f2) {
-    double sum = 0;
-    for (int i = 0; i < f1.numOfAttributes(); i++) {
-        sum += pow(f1.getAttribute(i) - f2.getAttribute(i), 2);
+// Calculates the euclidean distance according to the flowers attributes.
+double DistanceCalculator::euclidean(Flower &f1, Flower &f2) {
+    // Add zeros if one flower has more attributes than the other one.
+    if (f1.numOfAttributes() > f2.numOfAttributes()) {
+        for (int i = 0; i < f1.numOfAttributes() - f2.numOfAttributes(); i++) {
+            f2.addAttribute(0);
+        }
+    } else if (f1.numOfAttributes() < f2.numOfAttributes()) {
+        for (int i = 0; i < f2.numOfAttributes() - f1.numOfAttributes(); i++) {
+            f1.addAttribute(0);
+        }
     }
-    return sqrt(sum);
+    // Calculates the distance.
+    double distance = 0;
+    for (int i = 0; i < f1.numOfAttributes(); i++) {
+        distance += pow(f1.getAttribute(i) - f2.getAttribute(i), 2);
+    }
+    return sqrt(distance);
 }
 
-double DistanceCalculator::chebyshev(const Flower &f1, const Flower &f2) {
-    //the distance is the max of the simple distances
-    double max = 0;
-    for (int i = 0; i < f1.numOfAttributes(); i++) {
-        max = std::max(std::abs(f1.getAttribute(i) - f2.getAttribute(i)), max);
+// Calculates the chebyshev distance according to the flowers attributes.
+double DistanceCalculator::chebyshev(Flower &f1, Flower &f2) {
+    // Add zeros if one flower has more attributes than the other one.
+    if (f1.numOfAttributes() > f2.numOfAttributes()) {
+        for (int i = 0; i < f1.numOfAttributes() - f2.numOfAttributes(); i++) {
+            f2.addAttribute(0);
+        }
+    } else if (f1.numOfAttributes() < f2.numOfAttributes()) {
+        for (int i = 0; i < f2.numOfAttributes() - f1.numOfAttributes(); i++) {
+            f1.addAttribute(0);
+        }
     }
-    return max;
+    // Calculates the distance.
+    double distance = 0;
+    for (int i = 0; i < f1.numOfAttributes(); i++) {
+        distance = std::max(std::abs(f1.getAttribute(i) - f2.getAttribute(i)), distance);
+    }
+    return distance;
 }
 
-double DistanceCalculator::manhattan(const Flower &f1, const Flower &f2) {
+// Calculates the manhattan distance according to the flowers attributes.
+double DistanceCalculator::manhattan(Flower &f1, Flower &f2) {
+    // Add zeros if one flower has more attributes than the other one.
+    if (f1.numOfAttributes() > f2.numOfAttributes()) {
+        for (int i = 0; i < f1.numOfAttributes() - f2.numOfAttributes(); i++) {
+            f2.addAttribute(0);
+        }
+    } else if (f1.numOfAttributes() < f2.numOfAttributes()) {
+        for (int i = 0; i < f2.numOfAttributes() - f1.numOfAttributes(); i++) {
+            f1.addAttribute(0);
+        }
+    }
+    // Calculates the distance.
     double distance = 0;
     for (int i = 0; i < f1.numOfAttributes(); i++) {
         distance += std::abs(f1.getAttribute(i) - f2.getAttribute(i));

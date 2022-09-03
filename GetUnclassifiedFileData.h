@@ -8,11 +8,15 @@
 
 #include <string>
 
+// Gets file data by the file path and returns it.
 class GetUnclassifiedFileData {
+    // The file path.
     std::string unclassifiedPath;
 public:
+    // Constructor.
     explicit GetUnclassifiedFileData(std::string unclassifiedPath) : unclassifiedPath(std::move(unclassifiedPath)) {}
 
+    // Returns the data that stored in the file path.
     std::string getData();
 };
 

@@ -12,6 +12,7 @@
 class DefaultIO {
 public:
     virtual void write(std::string message) = 0;
+
     virtual std::string read() = 0;
 };
 

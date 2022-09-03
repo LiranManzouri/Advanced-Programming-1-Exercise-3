@@ -2,7 +2,6 @@
 // Created by liran on 30/07/2022.
 //
 
-#include <iostream>
 #include "CreateClassifiedFiles.h"
 #include "ReadFlowers.h"
 #include "ClassifyFlower.h"
@@ -10,11 +9,9 @@
 
 using namespace std;
 
-/**
- * It reads the classified and unclassified flowers, and then
- * classifies the unclassified flowers by the three methods, and writes the results to the files
- */
+// Classifies the given unclassified data by the given classified data and returns the classification types.
 vector<string> CreateClassifiedFiles::createClassified() const {
+    // Calculates the number of classified flowers.
     int numOfClassifiedFlowers = 0;
     string currentData = m_classifiedFlowers;
     while (!currentData.empty()) {
@@ -22,34 +19,42 @@ vector<string> CreateClassifiedFiles::createClassified() const {
         numOfClassifiedFlowers++;
     }
 
-    vector<string> flowerTypesByOrder;
-
+    // Saves the classified flowers.
     Flower classified[numOfClassifiedFlowers];
-    int i = 0;
+    // Saves a copy of the classified flowers.
     currentData = m_classifiedFlowers;
+    int i = 0;
     string line;
+    // Runs on the whole data and cut it by lines and get the flowers.
     while (!currentData.empty()) {
         line = currentData.substr(0, currentData.find('\n'));
         currentData.erase(0, currentData.find('\n') + 1);
         if (line.empty()) {
             break;
         }
+        // Get the flower from the line.
         CreateFlowerByLine createFlowerByLine(line);
         Flower flower = createFlowerByLine.getFlower();
         classified[i] = flower;
         i++;
     }
+    // Saves a copy of the unclassified flowers.
     string info = m_flowersInfoToClassify;
     i = 0;
-    //writes the classified info to the array.
+    // Saves the types after classifying.
+    vector<string> flowerTypesByOrder;
+    // Runs on the unclassified data, cut it by lines, get the flower from the line and classify it.
     while (!info.empty()) {
+        // Gets the line.
         line = info.substr(0, info.find('\n'));
         info.erase(0, info.find('\n') + 1);
         if (line.empty()) {
             break;
         }
+        // Gets the flower.
         CreateFlowerByLine createFlowerByLine(line);
         const Flower unclassifiedFlower = createFlowerByLine.getFlower();
+        // Classifies the flower accordingly to the given distance metric and save the type.
         ClassifyFlower classifyFlower(unclassifiedFlower, classified, numOfClassifiedFlowers, m_k, m_types);
         if (m_distanceMetric == "MAN") {
             flowerTypesByOrder.push_back(classifyFlower.manhattanClassify());
@@ -60,5 +65,6 @@ vector<string> CreateClassifiedFiles::createClassified() const {
         }
         i++;
     }
+    // Returns the types.
     return flowerTypesByOrder;
 }

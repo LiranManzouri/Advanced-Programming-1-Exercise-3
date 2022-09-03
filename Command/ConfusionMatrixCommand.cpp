@@ -7,7 +7,6 @@
 
 #include <cmath>
 #include <algorithm>
-#include <iostream>
 
 using namespace std;
 
@@ -31,7 +30,7 @@ void ConfusionMatrixCommand::execute() {
     vector<string> realTypesByOrder;
 
     string line;
-    // Gets the real types.
+    // Gets the real types of the flowers in the classified train data.
     char delim = ',';
     while (!trainData.empty()) {
         line = trainData.substr(0, trainData.find('\n'));
@@ -42,6 +41,7 @@ void ConfusionMatrixCommand::execute() {
         trainData.erase(0, trainData.find('\n') + 1);
     }
 
+    // Creates new matrix size*size and initialize it all to 0.
     unsigned long size = types->size();
     vector<vector<double>> matrix;
     matrix.reserve(size);
@@ -54,11 +54,16 @@ void ConfusionMatrixCommand::execute() {
         matrix.push_back(vec);
     }
 
+    // The matrix mentioned above will save the details that belong
+    // to the type i but were classified by the classifier to type j.
+    // Counts for every real type.
     for (int i = 0; i < realTypesByOrder.size(); i++) {
         for (int j = 0; j < size; ++j) {
+            // Same type.
             if (realTypesByOrder.at(i) == classifiedTypes.at(i) && realTypesByOrder.at(i) == types->at(j)) {
                 matrix.at(j).at(j)++;
             } else {
+                // Checks which type is the classifier classified it and increases in the appropriate place.
                 for (int l = 0; l < size; l++) {
                     if (realTypesByOrder.at(i) == types->at(j) && classifiedTypes.at(i) == types->at(l)) {
                         matrix.at(j).at(l)++;
@@ -68,41 +73,56 @@ void ConfusionMatrixCommand::execute() {
         }
     }
 
+    // Saves the rounded (floor) percents.
     vector<vector<int>> intPercentsMatrix;
     intPercentsMatrix.reserve(size);
 
+    // Calculates the floored percents by the matrix above.
     for (int i = 0; i < size; i++) {
         intPercentsMatrix.emplace_back();
+        // Saves the exact percents.
         vector<double> doublePercentsMatrix;
         double totalInRow = 0;
+        // Total number of elements in the i-th row.
         for (int j = 0; j < size; j++) {
             totalInRow += matrix[i][j];
         }
+        // One saves the exact percent and the other saves the rounded percents.
         for (int j = 0; j < size; ++j) {
             doublePercentsMatrix.push_back((matrix[i][j] / totalInRow) * 100);
             intPercentsMatrix[i].push_back(floor((matrix[i][j] / totalInRow) * 100));
         }
+        // Total percents in a row.
         int totalPercentsInRow = 0;
         for (int j = 0; j < size; j++) {
             totalPercentsInRow += intPercentsMatrix[i][j];
         }
+        // The number of percents which are missing to complete the percents sum to 100%.
         int remainedTo100 = 100 - totalPercentsInRow;
+        // The errors of the double exact percents (the numbers after the dot).
         vector<pair<double, int>> errors;
         errors.reserve(size);
+        // Calculates the error and add it to the errors vector.
         for (int j = 0; j < size; j++) {
             errors.emplace_back(doublePercentsMatrix[j] - floor(doublePercentsMatrix[j]), j);
         }
+        // Sorting the errors vector.
         sort(errors.begin(), errors.end());
+        // Add 1 percent to the percents with the highest errors until the sum is 100%.
         for (int j = 0; j < remainedTo100; j++) {
+            // Sorted in ascending order so we need the last elements for the highest error.
             intPercentsMatrix[i][errors[size - j - 1].second]++;
         }
     }
 
+    // The final matrix to send to the client, as a string.
     string percentsString;
+    // Prints the types of the columns.
     for (int i = 0; i < size; i++) {
         percentsString.append("\t\t" + types->at(i));
     }
     percentsString.append("\n");
+    // Saves the current type and the current row from the percents' matrix.
     for (int i = 0; i < size; i++) {
         percentsString.append(types->at(i) + "\t\t");
         for (int j = 0; j < size; j++) {

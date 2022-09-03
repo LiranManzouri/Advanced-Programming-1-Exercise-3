@@ -8,10 +8,12 @@
 
 #include <string>
 
+// Class to check if a string can be converted to positive integer or to double.
 class StringTo {
 public:
-    static bool Int(const std::string& str);
-    static bool Double(const std::string& str);
+    static bool Int(const std::string &str);
+
+    static bool Double(const std::string &str);
 };
 
 

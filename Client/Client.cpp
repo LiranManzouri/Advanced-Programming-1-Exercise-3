@@ -23,8 +23,9 @@ string read(int sock) {
     }
     return buffer;
 }
+
 // Write a message to the server.
-void write(int sock, const string& message) {
+void write(int sock, const string &message) {
     // Sends and checks that it sent successfully.
     long sent_bytes = send(sock, message.c_str(), message.length(), 0);
     if (sent_bytes < 0) {
@@ -116,13 +117,10 @@ int main(int argc, char const *argv[]) {
                 cout << messageFromServer;
             }
             getline(cin, messageToServer);
-            if(messageToServer.empty()) {
+            if (messageToServer.empty()) {
                 messageToServer = "[Enter]";
             }
             write(sock, messageToServer);
         }
     }
-
-
-
 }

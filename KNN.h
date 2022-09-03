@@ -1,18 +1,18 @@
 #ifndef ADVANCED_PROGRAMMING_1___EXERCISE_3_KNN_H
 #define ADVANCED_PROGRAMMING_1___EXERCISE_3_KNN_H
 
-#include <vector>
 #include "Flower.h"
 
-// the class implements the quickselect algorithm by the second element in the pair, "double"
-// which is responsable for the distance.
+#include <vector>
+
+// The class implements the quick select algorithm by the second element in the pair - the distance.
 class KNN {
-    // the partion part in quickselect
-    static int partition(std::vector<std::pair<Flower *, double>>& arr, int left, int right, int pivot);
+    // The partition part in quick select algorithm.
+    static int partition(std::vector<std::pair<Flower *, double>> &arr, int left, int right, int pivot);
 
 public:
-    // the quickselect itself
-    static void QuickSelect(int k, std::vector<std::pair<Flower *, double>>& arr, int left, int right);
+    // The quick select algorithm.
+    static void QuickSelect(int k, std::vector<std::pair<Flower *, double>> &arr, int left, int right);
 };
 
 
