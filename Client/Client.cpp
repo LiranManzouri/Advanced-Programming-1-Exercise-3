@@ -110,6 +110,7 @@ int main(int argc, char const *argv[]) {
             // Prints the results in the file.
             messageFromServer = read(sock);
             outputFile << messageFromServer;
+            outputFile.close();
             write(sock, "Done");
             // Prints and waits for input without something specific to do.
         } else {

@@ -41,6 +41,7 @@ void ReadFlowers::readAndSaveFlowers() {
         flowers[index] = flower;
         index++;
     }
+    flowersInputFile.close();
 }
 
 // Gets the number of flowers in the file.
@@ -61,6 +62,7 @@ int ReadFlowers::getNumOfFlowers() {
         }
         numOfFlowers++;
     }
+    inputFile.close();
     // Returns the number of flowers.
     return numOfFlowers;
 }
