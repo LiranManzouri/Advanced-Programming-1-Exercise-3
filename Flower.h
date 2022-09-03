@@ -45,9 +45,6 @@ public:
 
     double getAttribute(unsigned long i) const;
 
-    // Adds attribute - useful if one flower has fewer attributes than the other one in the distance calculator.
-    void addAttribute(double i);
-
     // Returns the num of attributes.
     unsigned long numOfAttributes() const;
 };

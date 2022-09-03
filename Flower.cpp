@@ -21,8 +21,3 @@ unsigned long Flower::numOfAttributes() const {
 double Flower::getAttribute(unsigned long i) const {
     return m_flowerAttributes.at(i);
 }
-
-// Adding attributes.
-void Flower::addAttribute(double i) {
-    m_flowerAttributes.push_back(i);
-}
