@@ -3,7 +3,7 @@
 #include <cmath>
 
 // Calculates the euclidean distance according to the flowers attributes.
-double DistanceCalculator::euclidean(Flower &f1, Flower &f2) {
+double DistanceCalculator::euclidean(Flower f1, Flower f2) {
     // Add zeros if one flower has more attributes than the other one.
     if (f1.numOfAttributes() > f2.numOfAttributes()) {
         for (int i = 0; i < f1.numOfAttributes() - f2.numOfAttributes(); i++) {
@@ -23,7 +23,7 @@ double DistanceCalculator::euclidean(Flower &f1, Flower &f2) {
 }
 
 // Calculates the chebyshev distance according to the flowers attributes.
-double DistanceCalculator::chebyshev(Flower &f1, Flower &f2) {
+double DistanceCalculator::chebyshev(Flower f1, Flower f2) {
     // Add zeros if one flower has more attributes than the other one.
     if (f1.numOfAttributes() > f2.numOfAttributes()) {
         for (int i = 0; i < f1.numOfAttributes() - f2.numOfAttributes(); i++) {
@@ -43,7 +43,7 @@ double DistanceCalculator::chebyshev(Flower &f1, Flower &f2) {
 }
 
 // Calculates the manhattan distance according to the flowers attributes.
-double DistanceCalculator::manhattan(Flower &f1, Flower &f2) {
+double DistanceCalculator::manhattan(Flower f1, Flower f2) {
     // Add zeros if one flower has more attributes than the other one.
     if (f1.numOfAttributes() > f2.numOfAttributes()) {
         for (int i = 0; i < f1.numOfAttributes() - f2.numOfAttributes(); i++) {

@@ -7,11 +7,11 @@
 class DistanceCalculator {
 
 public:
-    static double euclidean(Flower &f1, Flower &f2);
+    static double euclidean(Flower f1, Flower f2);
 
-    static double chebyshev(Flower &f1, Flower &f2);
+    static double chebyshev(Flower f1, Flower f2);
 
-    static double manhattan(Flower &f1, Flower &f2);
+    static double manhattan(Flower f1, Flower f2);
 
 };
 
