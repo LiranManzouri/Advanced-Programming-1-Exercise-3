@@ -26,16 +26,16 @@ Flower CreateFlowerByLine::getFlower() {
     stringAttributes.push_back(lastAttribute);
 
     // Saves the attributes without the flower type.
-    vector<double> doubleAttributes;
+    vector<double> doubleAttributes(10);
     doubleAttributes.reserve(stringAttributes.size() - 1);
     for (int i = 0; i < stringAttributes.size() - 1; ++i) {
-        doubleAttributes.push_back(stod(stringAttributes.at(i)));
+        doubleAttributes.at(i) = stod(stringAttributes.at(i));
     }
     string flowerType;
     // The last attribute can be either a double number (if the flower
     // is unclassified) or the flower type (if the flower is classified).
     if (StringTo::Double(lastAttribute)) {
-        doubleAttributes.push_back(stod(lastAttribute));
+        doubleAttributes.at(stringAttributes.size() - 1) = stod(lastAttribute);
     } else {
         flowerType = lastAttribute;
     }
