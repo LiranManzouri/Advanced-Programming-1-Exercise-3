@@ -6,8 +6,11 @@
 #include "ConfusionMatrixCommand.h"
 
 #include <cmath>
+#include <algorithm>
+#include <iostream>
 
 using namespace std;
+
 // Class for the sixth command which calculates a matrix that the element (i,j)
 // is the percents to classify organ from type i to type j, according to the train data.
 void ConfusionMatrixCommand::execute() {
@@ -20,12 +23,12 @@ void ConfusionMatrixCommand::execute() {
     }
 
     // Classifying the train data.
-    CreateClassifiedFiles createClassifiedFiles(*k, *distanceMetric, classifiedTrainData, classifiedTrainData);
+    CreateClassifiedFiles createClassifiedFiles(*k, *distanceMetric, classifiedTrainData,
+                                                classifiedTrainData, types);
     vector<string> classifiedTypes = createClassifiedFiles.createClassified();
 
-    //
     string trainData = classifiedTrainData;
-    vector<string> realTypes;
+    vector<string> realTypesByOrder;
 
     string line;
     // Gets the real types.
@@ -35,49 +38,75 @@ void ConfusionMatrixCommand::execute() {
         while (line.find(delim) != string::npos) {
             line.erase(0, line.find(delim) + 1);
         }
-        realTypes.push_back(line);
+        realTypesByOrder.push_back(line);
         trainData.erase(0, trainData.find('\n') + 1);
     }
 
-    double matrix[3][3] = {0};
+    unsigned long size = types->size();
+    vector<vector<double>> matrix;
+    matrix.reserve(size);
+    for (int i = 0; i < size; ++i) {
+        vector<double> vec;
+        vec.reserve(size);
+        for (int j = 0; j < size; ++j) {
+            vec.push_back(0);
+        }
+        matrix.push_back(vec);
+    }
 
-    for (int i = 0; i < realTypes.size(); i++) {
-        if (realTypes.at(i) == classifiedTypes.at(i) && realTypes.at(i) == "Iris-setosa") {
-            matrix[0][0]++;
-        } else if (realTypes.at(i) == classifiedTypes.at(i) && realTypes.at(i) == "Iris-versicolor") {
-            matrix[1][1]++;
-        } else if (realTypes.at(i) == classifiedTypes.at(i) && realTypes.at(i) == "Iris-virginica") {
-            matrix[2][2]++;
-        } else if (realTypes.at(i) == "Iris-setosa" && classifiedTypes.at(i) == "Iris-versicolor") {
-            matrix[0][1]++;
-        } else if (realTypes.at(i) == "Iris-setosa" && classifiedTypes.at(i) == "Iris-virginica") {
-            matrix[0][2]++;
-        } else if (realTypes.at(i) == "Iris-versicolor" && classifiedTypes.at(i) == "Iris-setosa") {
-            matrix[1][0]++;
-        } else if (realTypes.at(i) == "Iris-versicolor" && classifiedTypes.at(i) == "Iris-virginica") {
-            matrix[1][2]++;
-        } else if (realTypes.at(i) == "Iris-virginica" && classifiedTypes.at(i) == "Iris-setosa") {
-            matrix[2][0]++;
-        } else if (realTypes.at(i) == "Iris-virginica" && classifiedTypes.at(i) == "Iris-versicolor") {
-            matrix[2][1]++;
+    for (int i = 0; i < realTypesByOrder.size(); i++) {
+        for (int j = 0; j < size; ++j) {
+            if (realTypesByOrder.at(i) == classifiedTypes.at(i) && realTypesByOrder.at(i) == types->at(j)) {
+                matrix.at(j).at(j)++;
+            } else {
+                for (int l = 0; l < size; l++) {
+                    if (realTypesByOrder.at(i) == types->at(j) && classifiedTypes.at(i) == types->at(l)) {
+                        matrix.at(j).at(l)++;
+                    }
+                }
+            }
         }
     }
 
-    int percentsMatrix[3][3] = {0};
-    for (int j = 0; j < 3; j++) {
-        double total = matrix[j][0] + matrix[j][1] + matrix[j][2];
-        for (int l = 0; l < 3; l++) {
-            percentsMatrix[j][l] = (int) (round((matrix[j][l] / total) * 100));
+    vector<vector<int>> intPercentsMatrix;
+    intPercentsMatrix.reserve(size);
+
+    for (int i = 0; i < size; i++) {
+        intPercentsMatrix.emplace_back();
+        vector<double> doublePercentsMatrix;
+        double totalInRow = 0;
+        for (int j = 0; j < size; j++) {
+            totalInRow += matrix[i][j];
+        }
+        for (int j = 0; j < size; ++j) {
+            doublePercentsMatrix.push_back((matrix[i][j] / totalInRow) * 100);
+            intPercentsMatrix[i].push_back(floor((matrix[i][j] / totalInRow) * 100));
+        }
+        int totalPercentsInRow = 0;
+        for (int j = 0; j < size; j++) {
+            totalPercentsInRow += intPercentsMatrix[i][j];
+        }
+        int remainedTo100 = 100 - totalPercentsInRow;
+        vector<pair<double, int>> errors;
+        errors.reserve(size);
+        for (int j = 0; j < size; j++) {
+            errors.emplace_back(doublePercentsMatrix[j] - floor(doublePercentsMatrix[j]), j);
+        }
+        sort(errors.begin(), errors.end());
+        for (int j = 0; j < remainedTo100; j++) {
+            intPercentsMatrix[i][errors[size - j - 1].second]++;
         }
     }
 
     string percentsString;
-    string typesArray[3] = {"Iris-setosa", "Iris-versicolor", "Iris-virginica"};
-    percentsString.append('\t' + typesArray[0] + '\t' + typesArray[1] + '\t' + typesArray[2] + "\n");
-    for (int j = 0; j < 3; j++) {
-        percentsString.append(typesArray[j] + '\t');
-        for (int l = 0; l < 3; l++) {
-            percentsString.append(to_string(percentsMatrix[j][l]) + "%" + '\t');
+    for (int i = 0; i < size; i++) {
+        percentsString.append("\t\t" + types->at(i));
+    }
+    percentsString.append("\n");
+    for (int i = 0; i < size; i++) {
+        percentsString.append(types->at(i) + "\t\t");
+        for (int j = 0; j < size; j++) {
+            percentsString.append(to_string(intPercentsMatrix[i][j]) + "%" + "\t\t");
         }
         percentsString.append("\n");
     }
@@ -91,12 +120,4 @@ void ConfusionMatrixCommand::execute() {
         dio->write("[Waiting for enter]");
         userInput = dio->read();
     }
-    /*                0             1               2
-     *              setosa      versicolor      virginica
-     *0 setosa        100%           0%             0%
-     *
-     *1 versicolor     0%           100%            0%
-     *
-     *2 virginica      0%            7%            93%
-     */
 }

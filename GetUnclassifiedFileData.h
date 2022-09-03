@@ -7,7 +7,6 @@
 
 
 #include <string>
-#include "IO/DefaultIO.h"
 
 class GetUnclassifiedFileData {
     std::string unclassifiedPath;

@@ -40,7 +40,7 @@ vector<string> CreateClassifiedFiles::createClassified() const {
         i++;
     }
     string info = m_flowersInfoToClassify;
-    /*int */i = 0;
+    i = 0;
     //writes the classified info to the array.
     while (!info.empty()) {
         line = info.substr(0, info.find('\n'));
@@ -50,7 +50,7 @@ vector<string> CreateClassifiedFiles::createClassified() const {
         }
         CreateFlowerByLine createFlowerByLine(line);
         const Flower unclassifiedFlower = createFlowerByLine.getFlower();
-        ClassifyFlower classifyFlower(unclassifiedFlower, classified, numOfClassifiedFlowers, m_k);
+        ClassifyFlower classifyFlower(unclassifiedFlower, classified, numOfClassifiedFlowers, m_k, m_types);
         if (m_distanceMetric == "MAN") {
             flowerTypesByOrder.push_back(classifyFlower.manhattanClassify());
         } else if (m_distanceMetric == "EUC") {

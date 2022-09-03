@@ -3,7 +3,6 @@
 //
 
 #include "../CreateClassifiedFiles.h"
-#include "../GetUnclassifiedFileData.h"
 #include "ClassifyCommand.h"
 
 using namespace std;
@@ -18,7 +17,8 @@ void ClassifyCommand::execute() {
         return;
     }
     // Classifying the unclassified flowers.
-    CreateClassifiedFiles createClassifiedFiles(*k, *distanceMetric, unclassifiedTestData, classifiedTrainData);
+    CreateClassifiedFiles createClassifiedFiles(*k, *distanceMetric,
+                unclassifiedTestData, classifiedTrainData, types);
     *flowerTypes = createClassifiedFiles.createClassified();
     dio->write("[Print]:classifying data complete\n");
     dio->read();

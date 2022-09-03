@@ -24,6 +24,7 @@ class CLI {
     char classifiedTrainData[16384] = {0};
     char unclassifiedTestData[16384] = {0};
     std::string distanceMetric = "EUC";
+    std::vector<std::string> types;
     std::vector<std::string> flowerTypes;
     void printMenu();
 
@@ -34,19 +35,19 @@ public:
 //        clientSocket = getNewClient();
 //    std::string unclassifiedPath;
         commands[0] = new UploadCommand(&k, classifiedTrainData, unclassifiedTestData, &distanceMetric,
-                                        &flowerTypes, dio);
+                                        &flowerTypes, &types, dio);
         commands[1] = new AlgoSettingsCommand(&k, classifiedTrainData, unclassifiedTestData, &distanceMetric,
-                                              &flowerTypes, dio);
+                                              &flowerTypes, &types, dio);
         commands[2] = new ClassifyCommand(&k, classifiedTrainData, unclassifiedTestData, &distanceMetric,
-                                          &flowerTypes, dio);
+                                          &flowerTypes, &types, dio);
         commands[3] = new PrintClassifiedCommand(&k, classifiedTrainData, unclassifiedTestData, &distanceMetric,
-                                                 &flowerTypes, dio);
+                                                 &flowerTypes, &types, dio);
         commands[4] = new DownloadResultsCommand(&k, classifiedTrainData, unclassifiedTestData, &distanceMetric,
-                                                 &flowerTypes, dio);
+                                                 &flowerTypes, &types, dio);
         commands[5] = new ConfusionMatrixCommand(&k, classifiedTrainData, unclassifiedTestData, &distanceMetric,
-                                                 &flowerTypes, dio);
+                                                 &flowerTypes, &types, dio);
         commands[6] = new ExitCommand(&k, classifiedTrainData, unclassifiedTestData, &distanceMetric,
-                                                 &flowerTypes, dio);
+                                                 &flowerTypes, &types, dio);
     }
 
     ~CLI() {

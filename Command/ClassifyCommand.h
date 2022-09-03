@@ -13,8 +13,10 @@ class ClassifyCommand : public Command {
 public:
     // Constructor.
     ClassifyCommand(int *k, char classifiedTrainData[16384], char unclassifiedTestData[16384],
-                    std::string *distanceMetric, std::vector<std::string> *flowerTypes, DefaultIO *dio) : Command(
-            "classify data", k, classifiedTrainData, unclassifiedTestData, distanceMetric, flowerTypes, dio) {}
+                    std::string *distanceMetric, std::vector<std::string> *flowerTypes, std::vector<std::string> *types,
+                    DefaultIO *dio) : Command(
+            "classify data", k, classifiedTrainData, unclassifiedTestData, distanceMetric, flowerTypes, types, dio) {}
+
     // Executes the command.
     void execute() override;
 };

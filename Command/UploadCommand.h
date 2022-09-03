@@ -8,12 +8,16 @@
 #include "Command.h"
 
 class UploadCommand : public Command {
+    void saveTypes(std::string fileData);
+
 public:
     // Constructor.
     UploadCommand(int *k, char classifiedTrainData[16384], char unclassifiedTestData[16384],
-                  std::string *distanceMetric, std::vector<std::string> *flowerTypes, DefaultIO *dio) : Command(
+                  std::string *distanceMetric, std::vector<std::string> *flowerTypes, std::vector<std::string> *types,
+                  DefaultIO *dio) : Command(
             "upload un unclassified csv data file", k, classifiedTrainData, unclassifiedTestData,
-            distanceMetric, flowerTypes, dio) {}
+            distanceMetric, flowerTypes, types, dio) {}
+
     // Executes the command.
     void execute() override;
 };

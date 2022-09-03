@@ -13,9 +13,11 @@ class DownloadResultsCommand : public Command {
 public:
     // Constructor.
     DownloadResultsCommand(int *k, char classifiedTrainData[16384], char unclassifiedTestData[16384],
-                           std::string *distanceMetric, std::vector<std::string> *flowerTypes, DefaultIO *dio)
+                           std::string *distanceMetric, std::vector<std::string> *flowerTypes,
+                           std::vector<std::string> *types, DefaultIO *dio)
             : Command("download results", k, classifiedTrainData, unclassifiedTestData, distanceMetric,
-                      flowerTypes, dio) {}
+                      flowerTypes, types, dio) {}
+
     // Executes the command.
     void execute() override;
 };

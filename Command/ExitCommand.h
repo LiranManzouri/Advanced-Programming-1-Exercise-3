@@ -12,9 +12,11 @@ class ExitCommand : public Command {
 public:
     // Constructor.
     ExitCommand(int *k, char classifiedTrainData[16384], char unclassifiedTestData[16384],
-                           std::string *distanceMetric, std::vector<std::string> *flowerTypes, DefaultIO *dio)
+                std::string *distanceMetric, std::vector<std::string> *flowerTypes, std::vector<std::string> *types,
+                DefaultIO *dio)
             : Command("exit", k, classifiedTrainData, unclassifiedTestData, distanceMetric,
-                      flowerTypes, dio) {}
+                      flowerTypes, types, dio) {}
+
     // Executes the command.
     void execute() override;
 };
