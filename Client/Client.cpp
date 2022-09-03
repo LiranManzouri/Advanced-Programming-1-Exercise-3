@@ -105,6 +105,8 @@ int main(int argc, char const *argv[]) {
                 if (path[path.length() - 1] == '\"') {
                     path.pop_back();
                 }
+                path.append("/results.txt");
+                outputFile.open(path);
             }
             write(sock, "Done");
             // Prints the results in the file.
