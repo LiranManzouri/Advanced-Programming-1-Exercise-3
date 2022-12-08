@@ -1,4 +1,4 @@
-# Advanced Programming 1 - Exercise 2
+# Advanced Programming 1 - Exercise 3
 
 In order to run the project, you will need to save an empty "bin" directory in the directory you are in at the time you
 run the project. Next, you'll need to open 2 terminals, in each you'll need to move into the directory where the code
